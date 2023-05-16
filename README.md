@@ -1,2 +1,2 @@
 # BasicShooter
-Currently Tank Game, thinking of something different.
+Work in progress space ship shooter for class assignment.
