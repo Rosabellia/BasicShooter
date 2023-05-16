@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-RequireComponent(typeof(SpaceShipPawn));
+[RequireComponent(typeof(SpaceShipPawn))]
 public class PlayerController : Controller
 {
     private SpaceShipPawn playerpawn;
@@ -16,6 +16,12 @@ public class PlayerController : Controller
 
     // Update is called once per frame
     public override void Update()
+    {
+        ProcessInputs();
+        base.Update();
+    }
+
+    private void ProcessInputs()
     {
         if (Input.GetKey(KeyCode.W))
         {
@@ -33,6 +39,5 @@ public class PlayerController : Controller
         {
             playerpawn.Rotate(1f); // turns to the right
         }
-        base.Update();
     }
 }
