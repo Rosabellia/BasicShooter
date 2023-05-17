@@ -5,6 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(SpaceShipPawn))]
 public class PlayerController : Controller
 {
+    public KeyCode forwardKeyCode;
+    public KeyCode backwardKeyCode;
+    public KeyCode rightKeyCode;
+    public KeyCode leftKeyCode;
+
     private SpaceShipPawn playerpawn;
 
     // Start is called before the first frame update
@@ -23,21 +28,22 @@ public class PlayerController : Controller
 
     private void ProcessInputs()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(forwardKeyCode))
         {
             playerpawn.MoveForward();
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(backwardKeyCode))
         {
             playerpawn.MoveBackward();
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-            playerpawn.Rotate(-1f); // turns to the left
-        }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(rightKeyCode))
         {
             playerpawn.Rotate(1f); // turns to the right
         }
+        if (Input.GetKey(leftKeyCode))
+        {
+            playerpawn.Rotate(-1f); // turns to the left
+        }
+        
     }
 }
