@@ -4,13 +4,13 @@ using UnityEngine;
 
 public abstract class Pawn : MonoBehaviour
 {
-    // Start is called before the first frame update
+    protected Mover mover;
+
     public virtual void Start()
     {
         
     }
 
-    // Update is called once per frame
     public virtual void Update()
     {
         

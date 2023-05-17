@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class SpaceShipPawn : Pawn
 {
+
+    public float forwardMoveSpeed = 5f;
+    public float backwardMoveSpeed = 3f;
+
     public override void MoveBackward()
     {
         Debug.Log("Move Backwards");
@@ -13,6 +17,7 @@ public class SpaceShipPawn : Pawn
     public override void MoveForward()
     {
         Debug.Log("Move Forwards");
+        mover.Move(forwardMoveSpeed, 1);
         base.MoveForward();
     }
 
@@ -25,6 +30,7 @@ public class SpaceShipPawn : Pawn
     // Start is called before the first frame update
     public override void Start()
     {
+        //mover = GetComponent(ShipMover);
         base.Start();
     }
 
