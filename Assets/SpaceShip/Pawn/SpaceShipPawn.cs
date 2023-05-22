@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ShipMover))]
 public class SpaceShipPawn : Pawn
 {
-
-    public float forwardMoveSpeed = 5f;
-    public float backwardMoveSpeed = 3f;
+    private const float moveForward = 1;
+    private const float movebackward = -1;
+    public float forwardMoveSpeed = 50f;
+    public float backwardMoveSpeed = 30f;
+    public float shipRotationSpeed = 30f;
 
     public override void MoveBackward()
     {
@@ -24,6 +27,7 @@ public class SpaceShipPawn : Pawn
     public override void Rotate(float direction)
     {
         Debug.Log("Rotate");
+        mover.Rotate(shipRotationSpeed, direction);
         base.Rotate(direction);
     }
 

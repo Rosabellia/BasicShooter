@@ -16,7 +16,20 @@ public class PlayerController : Controller
     public override void Start()
     {
         playerpawn = GetComponent<SpaceShipPawn>();
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.players.Add(this);
+        }
+
         base.Start();
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.players.Remove(this);
+        }
     }
 
     // Update is called once per frame

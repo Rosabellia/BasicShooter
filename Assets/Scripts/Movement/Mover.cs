@@ -8,7 +8,7 @@ public abstract class Mover : MonoBehaviour
     {
 
     }
-    public virtual void Rotate()  // make the player rotate
+    public virtual void Rotate(float rotationSpeed, float direction)  // make the player rotate
     {
 
     }

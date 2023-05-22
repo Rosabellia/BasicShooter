@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ShipMover : Mover
 {
     private Rigidbody shipRigidBody;
@@ -18,8 +19,10 @@ public class ShipMover : Mover
         base.Move(moveSpeed, direction);
     }
 
-    public override void Rotate()
+    public override void Rotate(float rotationSpeed, float direction)
     {
-        base.Rotate();
+        float yAngle = direction * Time.deltaTime * rotationSpeed;
+        transform.Rotate(0f, yAngle, 0f);
+        base.Rotate(rotationSpeed, direction);
     }
 }
