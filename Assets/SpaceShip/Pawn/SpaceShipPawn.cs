@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(ShipMover))]
 public class SpaceShipPawn : Pawn
 {
-    private const float moveForward = 1;
-    private const float movebackward = -1;
+    private const float ForwardDirection = 1f;
+    private const float BackwardDirection = -1f;
     public float forwardMoveSpeed = 50f;
     public float backwardMoveSpeed = 30f;
     public float shipRotationSpeed = 30f;
@@ -14,13 +14,14 @@ public class SpaceShipPawn : Pawn
     public override void MoveBackward()
     {
         Debug.Log("Move Backwards");
+        mover.Move(backwardMoveSpeed, BackwardDirection);
         base.MoveBackward();
     }
 
     public override void MoveForward()
     {
         Debug.Log("Move Forwards");
-        mover.Move(forwardMoveSpeed, 1);
+        mover.Move(forwardMoveSpeed, ForwardDirection);
         base.MoveForward();
     }
 
@@ -34,7 +35,7 @@ public class SpaceShipPawn : Pawn
     // Start is called before the first frame update
     public override void Start()
     {
-        //mover = GetComponent(ShipMover);
+        mover = GetComponent<ShipMover>();
         base.Start();
     }
 

@@ -214,6 +214,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3708594219533595071, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: m_IsLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3708594219533595071, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: m_AffectTranslationX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3708594219533595071, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: m_AffectTranslationZ
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6796675524214898361, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: leftKeyCode
       value: 97

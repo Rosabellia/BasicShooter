@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShip
       objectReference: {fileID: 0}
+    - target: {fileID: 7557030193078809187, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
 --- !u!1 &7026009868181533256 stripped
@@ -62,6 +66,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6857582383779074947, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
   m_PrefabInstance: {fileID: 4515527575085883851}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6629836849201851695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7026009868181533256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d237834dd2f9f0349a0d8095b8257402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forwardMoveSpeed: 50
+  backwardMoveSpeed: 30
+  shipRotationSpeed: 30
 --- !u!114 &6796675524214898361
 MonoBehaviour:
   m_ObjectHideFlags: 0
