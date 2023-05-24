@@ -214,6 +214,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6629836849201851695, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: forwardMoveSpeed
+      value: 9000
+      objectReference: {fileID: 0}
+    - target: {fileID: -6629836849201851695, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: backwardMoveSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: -6629836849201851695, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: shipRotationSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3708594219533595071, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: m_IsLocked
       value: 1
@@ -225,6 +237,14 @@ PrefabInstance:
     - target: {fileID: 3708594219533595071, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: m_AffectTranslationZ
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6230051188803670952, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: m_Mass
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6230051188803670952, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: m_Constraints
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6796675524214898361, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: leftKeyCode
@@ -245,6 +265,10 @@ PrefabInstance:
     - target: {fileID: 7026009868181533256, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: m_Name
       value: PlayerShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026009868181533256, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8501761391830540160, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: m_RootOrder
@@ -389,7 +413,7 @@ Transform:
   m_GameObject: {fileID: 256430974}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 40, y: 1, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

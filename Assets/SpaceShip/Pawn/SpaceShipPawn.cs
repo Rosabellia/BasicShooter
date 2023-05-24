@@ -36,12 +36,11 @@ public class SpaceShipPawn : Pawn
     public override void Start()
     {
         mover = GetComponent<ShipMover>();
-        base.Start();
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
+
     }
 }

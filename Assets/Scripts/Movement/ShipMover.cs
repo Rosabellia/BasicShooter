@@ -9,13 +9,14 @@ public class ShipMover : Mover
 
     private void Start()
     {
+        //Make sure the pawn has a Rigibody
         shipRigidBody = GetComponent<Rigidbody>();
     }
 
     public override void Move(float moveSpeed, float direction)
     {
         Vector3 currentPosition = transform.position;
-        shipRigidBody.MovePosition(currentPosition = (transform.forward * direction * moveSpeed * Time.deltaTime)); // direction makes it negative or positive
+        shipRigidBody.MovePosition(currentPosition + (transform.forward * moveSpeed * direction  * Time.deltaTime)); // direction makes it negative or positive
         base.Move(moveSpeed, direction);
     }
 

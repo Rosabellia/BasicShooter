@@ -5,16 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(SpaceShipPawn))]
 public class PlayerController : Controller
 {
+    // Let the Desinger change the key buttons
     public KeyCode forwardKeyCode;
     public KeyCode backwardKeyCode;
     public KeyCode rightKeyCode;
     public KeyCode leftKeyCode;
 
+    // Make the component a variable
     private SpaceShipPawn playerpawn;
 
     // Start is called before the first frame update
     public override void Start()
     {
+        // Make sure we have the SpaceShipPawn
         playerpawn = GetComponent<SpaceShipPawn>();
         if (GameManager.Instance)
         {
@@ -26,6 +29,7 @@ public class PlayerController : Controller
 
     private void OnDestroy()
     {
+        // When the Player gets destroyed, they get removed from the Player list
         if (GameManager.Instance)
         {
             GameManager.Instance.players.Remove(this);
@@ -41,6 +45,7 @@ public class PlayerController : Controller
 
     private void ProcessInputs()
     {
+        // Assign each buttion
         if (Input.GetKey(forwardKeyCode))
         {
             playerpawn.MoveForward();
