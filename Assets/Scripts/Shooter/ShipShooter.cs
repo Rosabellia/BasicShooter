@@ -36,6 +36,6 @@ public class ShipShooter : Shooter
 
     public override void Update()
     {
-        throw new System.NotImplementedException();
+        
     }
 }
