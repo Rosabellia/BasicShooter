@@ -5,29 +5,26 @@ using UnityEngine;
 [RequireComponent(typeof(ShipMover))]
 public class SpaceShipPawn : Pawn
 {
-    private const float ForwardDirection = 1f;
-    private const float BackwardDirection = -1f;
-    public float forwardMoveSpeed = 50f;
-    public float backwardMoveSpeed = 30f;
-    public float shipRotationSpeed = 30f;
+    private const float ForwardDirection = 1f; // Makes ship move forward
+    private const float BackwardDirection = -1f; // negatives make the ship move backwards
+    public float forwardMoveSpeed = 50f; // How fast the ship moves forward
+    public float backwardMoveSpeed = 30f; // How fast the ship moves backward
+    public float shipRotationSpeed = 30f; // How fast the ship turns
 
     public override void MoveBackward()
     {
-        Debug.Log("Move Backwards");
-        mover.Move(backwardMoveSpeed, BackwardDirection);
+        mover.Move(backwardMoveSpeed, BackwardDirection); // Send the speed and direction to the mover component
         base.MoveBackward();
     }
 
     public override void MoveForward()
     {
-        Debug.Log("Move Forwards");
         mover.Move(forwardMoveSpeed, ForwardDirection);
         base.MoveForward();
     }
 
     public override void Rotate(float direction)
     {
-        Debug.Log("Rotate");
         mover.Rotate(shipRotationSpeed, direction);
         base.Rotate(direction);
     }
