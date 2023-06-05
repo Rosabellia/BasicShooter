@@ -39,28 +39,28 @@ public class PlayerController : Controller
     // Update is called once per frame
     public override void Update()
     {
-        ProcessInputs();
+        ProcessInputs(); // Tell the component that the player has pressed a button
         base.Update();
     }
 
     private void ProcessInputs()
     {
         // Assign each buttion
-        if (Input.GetKey(forwardKeyCode))
+        if (Input.GetKey(forwardKeyCode)) // Move forward
         {
             playerpawn.MoveForward();
         }
-        if (Input.GetKey(backwardKeyCode))
+        if (Input.GetKey(backwardKeyCode)) // Move Backward
         {
             playerpawn.MoveBackward();
         }
-        if (Input.GetKey(rightKeyCode))
+        if (Input.GetKey(rightKeyCode)) // Turn to the right
         {
-            playerpawn.Rotate(1f); // turns to the right
+            playerpawn.Rotate(1f); 
         }
-        if (Input.GetKey(leftKeyCode))
+        if (Input.GetKey(leftKeyCode)) // Turn to the left
         {
-            playerpawn.Rotate(-1f); // turns to the left
+            playerpawn.Rotate(-1f); 
         }
         
     }

@@ -23,8 +23,11 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage, Pawn source)
     {
+        //When taking damage the current health is subtracked by the damage
+        // minHealth and MaxHealth keep the player within their health limitations
         currentHealth = Mathf.Clamp(currentHealth - damage, minHealth, maxHealth);
         Debug.Log(source.name + " did " + damage + " amount");
+        // When the currentHealth is at Min Health or less, player dies
         if (Mathf.Approximately(currentHealth, minHealth))
         {
             Die(source);
