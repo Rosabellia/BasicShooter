@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ShipShooter : Shooter
 {
-    public Transform firepointTransform;
 
     public override void Shoot(GameObject shellPrefab, float fireforce, float damageDone, float lifespan)
     {
@@ -37,10 +36,5 @@ public class ShipShooter : Shooter
     public override void Update()
     {
         
-    }
-
-    public override void Update()
-    {
-        throw new System.NotImplementedException();
     }
 }

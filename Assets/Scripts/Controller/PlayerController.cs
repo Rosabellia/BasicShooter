@@ -10,6 +10,7 @@ public class PlayerController : Controller
     public KeyCode backwardKeyCode;
     public KeyCode rightKeyCode;
     public KeyCode leftKeyCode;
+    public KeyCode shootKeyCode;
 
     // Make the component a variable
     private SpaceShipPawn playerpawn;
@@ -62,6 +63,9 @@ public class PlayerController : Controller
         {
             playerpawn.Rotate(-1f); 
         }
-        
+        if (Input.GetKeyDown(shootKeyCode))
+        {
+            playerpawn.Shoot();
+        }
     }
 }

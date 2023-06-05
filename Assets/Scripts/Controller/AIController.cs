@@ -11,6 +11,12 @@ public class AIController : Controller
 
     public override void Update()
     {
+        MakeDesisions();
         base.Update();
+    }
+
+    public void MakeDesisions()
+    {
+        Debug.Log("I'm thinking...");
     }
 }

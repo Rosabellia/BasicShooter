@@ -10,6 +10,15 @@ public class SpaceShipPawn : Pawn
     public float forwardMoveSpeed = 50f; // How fast the ship moves forward
     public float backwardMoveSpeed = 30f; // How fast the ship moves backward
     public float shipRotationSpeed = 30f; // How fast the ship turns
+    public float fireForce = 1000f;
+    public float damageDone = 20f;
+    public float shellLifespan = 2f;
+    public float shotCooldownTime = 1f;
+    public GameObject shellPrefab;
+
+    private float secondsSinceLastShot = Mathf.Infinity;
+
+
 
     public override void MoveBackward()
     {
@@ -33,11 +42,25 @@ public class SpaceShipPawn : Pawn
     public override void Start()
     {
         mover = GetComponent<ShipMover>();
+        shooter = GetComponent<ShipShooter>();
+        base.Start();
     }
 
     // Update is called once per frame
     public override void Update()
     {
+        secondsSinceLastShot += Time.deltaTime;
+        base.Update();
+    }
 
+    public override void Shoot()
+    {
+        if (secondsSinceLastShot > shotCooldownTime)
+        {
+            shooter.Shoot(shellPrefab, fireForce, damageDone, shellLifespan);
+            secondsSinceLastShot = 0f;
+            base.Shoot();
+        }
+        
     }
 }

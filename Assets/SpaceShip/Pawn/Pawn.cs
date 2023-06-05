@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Pawn : MonoBehaviour
 {
     protected Mover mover;
+    protected Shooter shooter;
 
     public virtual void Start()
     {
@@ -25,6 +26,11 @@ public abstract class Pawn : MonoBehaviour
 
     }
     public virtual void Rotate(float direction)
+    {
+
+    }
+
+    public virtual void Shoot()
     {
 
     }
