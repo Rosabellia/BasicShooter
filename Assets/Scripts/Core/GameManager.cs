@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int points = 0; // Player points
-    public List<PlayerController> players = new List<PlayerController>(); // List of players
-    public List<AIController> enemies = new List<AIController>(); // List of enemies
+    public List<Controller> players = new List<Controller>(); // List of players
+    public List<Controller> enemies = new List<Controller>(); // List of enemies
 
     private void Awake()
     {

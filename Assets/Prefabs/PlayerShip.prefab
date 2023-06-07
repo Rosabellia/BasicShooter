@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShip
       objectReference: {fileID: 0}
+    - target: {fileID: 6857582383779074947, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7557030193078809187, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
       propertyPath: m_Constraints
       value: 80
@@ -104,3 +108,17 @@ MonoBehaviour:
   rightKeyCode: 100
   leftKeyCode: 97
   shootKeyCode: 0
+--- !u!114 &6954744327858079735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7026009868181533256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1eb5ee517233b4288231f0c5b5d156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 100
+  maxHealth: 100

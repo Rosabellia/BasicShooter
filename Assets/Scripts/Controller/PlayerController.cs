@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SpaceShipPawn))]
+//[RequireComponent(typeof(SpaceShipPawn))]
 public class PlayerController : Controller
 {
     // Let the Desinger change the key buttons
@@ -12,14 +12,11 @@ public class PlayerController : Controller
     public KeyCode leftKeyCode;
     public KeyCode shootKeyCode;
 
-    // Make the component a variable
-    private SpaceShipPawn playerpawn;
-
     // Start is called before the first frame update
     public override void Start()
     {
         // Make sure we have the SpaceShipPawn
-        playerpawn = GetComponent<SpaceShipPawn>();
+        pawn = GetComponent<Pawn>();
         if (GameManager.Instance)
         {
             GameManager.Instance.players.Add(this);
@@ -49,23 +46,23 @@ public class PlayerController : Controller
         // Assign each buttion
         if (Input.GetKey(forwardKeyCode)) // Move forward
         {
-            playerpawn.MoveForward();
+            pawn.MoveForward();
         }
         if (Input.GetKey(backwardKeyCode)) // Move Backward
         {
-            playerpawn.MoveBackward();
+            pawn.MoveBackward();
         }
         if (Input.GetKey(rightKeyCode)) // Turn to the right
         {
-            playerpawn.Rotate(1f); 
+            pawn.Rotate(1f); 
         }
         if (Input.GetKey(leftKeyCode)) // Turn to the left
         {
-            playerpawn.Rotate(-1f); 
+            pawn.Rotate(-1f); 
         }
         if (Input.GetKeyDown(shootKeyCode))
         {
-            playerpawn.Shoot();
+            pawn.Shoot();
         }
     }
 }

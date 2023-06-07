@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class Controller : MonoBehaviour
 {
-   public virtual void Start()
+    protected Pawn pawn;
+    public virtual void Start()
     {
 
     }
