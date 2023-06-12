@@ -22,18 +22,21 @@ public class SpaceShipPawn : Pawn
 
     public override void MoveBackward()
     {
-        mover.Move(backwardMoveSpeed, BackwardDirection); // Send the speed and direction to the mover component
+        Debug.Log("Move Backwards");
+        mover.Move(backwardMoveSpeed, BackwardDirection);
         base.MoveBackward();
     }
 
     public override void MoveForward()
     {
+        Debug.Log("Move Forwards");
         mover.Move(forwardMoveSpeed, ForwardDirection);
         base.MoveForward();
     }
 
     public override void Rotate(float direction)
     {
+        Debug.Log("Rotate");
         mover.Rotate(shipRotationSpeed, direction);
         base.Rotate(direction);
     }
@@ -68,6 +71,6 @@ public class SpaceShipPawn : Pawn
     {
         Vector3 vectorToTarget = targetPosition - transform.position;
         Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget, Vector3.up);
-        //transform.rotation - Quaternion.RotateTowards(transform.rotation, targetRotation, shipRotationSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, shipRotationSpeed * Time.deltaTime);
     }
 }

@@ -229,7 +229,7 @@ PrefabInstance:
       objectReference: {fileID: 2614046803521498486, guid: c56a36d9f852c0c47aaab163ffb294d7, type: 3}
     - target: {fileID: -6629836849201851695, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: forwardMoveSpeed
-      value: 90
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: -6629836849201851695, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: backwardMoveSpeed
@@ -237,7 +237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6629836849201851695, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: shipRotationSpeed
-      value: 30
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3708594219533595071, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
       propertyPath: m_IsLocked
@@ -461,6 +461,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 155085953}
+    - target: {fileID: -4161696450142928917, guid: 821c2d24fffc6cb47ae9a56332132b41, type: 3}
+      propertyPath: currentState
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 212361302153439237, guid: 821c2d24fffc6cb47ae9a56332132b41, type: 3}
       propertyPath: m_RootOrder
       value: 1

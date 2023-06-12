@@ -11,8 +11,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Make sure there is only 1 game mannager
-        if (Instance == null)
+        if(Instance == null)
         {
             Instance = this;
         }
@@ -21,7 +20,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Attempted to create a second instance of the Game Manager");
             Destroy(this);
         }
-        DontDestroyOnLoad(this.gameObject); // Keep the GameManager when level loads in
+        DontDestroyOnLoad(this.gameObject);
     }
     // Start is called before the first frame update
     void Start()
