@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(ShipMover))]
 public class SpaceShipPawn : Pawn
 {
-    private const float ForwardDirection = 1f; // Makes ship move forward
-    private const float BackwardDirection = -1f; // negatives make the ship move backwards
+    public const float ForwardDirection = 1f; // Makes ship move forward
+    public const float BackwardDirection = -1f; // negatives make the ship move backwards
     public float forwardMoveSpeed = 50f; // How fast the ship moves forward
     public float backwardMoveSpeed = 30f; // How fast the ship moves backward
     public float shipRotationSpeed = 30f; // How fast the ship turns

@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class AIController : Controller
 {
-    public enum AIState { Guard, Chase, Flee, Patrol, Attack, Scan, BacktoPoint}
-    public AIState currentState = AIState.Guard;
+    public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint}
+    public AIState currentState = AIState.Chase;
     private float lastStateChangeTime = 0f;
-    public GameObject target;
+    public float AttackRange = 100f;
+    public Controller target;
+    public Transform post;
 
     public override void Start()
     {
         pawn = GetComponent<Pawn>();
+        post = transform;
         base.Start();
     }
 
@@ -26,16 +29,40 @@ public class AIController : Controller
     {
         switch (currentState)
         {
-            case AIState.Guard:
+            case AIState.Idle:
                 // Do that states behavior
-                DoGuardState();
+                DoIdleState();
                 // Check for transistions
+                foreach (Controller playerController in GameManager.Instance.players)
+                {
+                    if (CanSee(playerController))
+                    {
+                        target = playerController;
+                        ChangeAIState(AIState.Chase);
+                        return;
+                    }
+                    if (CanHear(playerController.gameObject))
+                    {
+                        ChangeAIState(AIState.Scan);
+                        return;
+                    }
+                }
                 break;
             case AIState.Chase:
                 // Do that states behavior
                 DoChaseState();
 
                 // Check for transistions
+                if (!CanSee(target))
+                {
+                    target = null;
+                    ChangeAIState(AIState.Scan);
+                }
+                if(Vector3.SqrMagnitude(target.transform.position - transform.position) <= AttackRange)
+                {
+                    ChangeAIState(AIState.Attack);
+                    return;
+                }
                 break;
             case AIState.Flee:
                 // Do that states behavior
@@ -51,16 +78,50 @@ public class AIController : Controller
                 // Do that states behavior
                 DoAttackState();
                 // Check for transistions
+                if (Vector3.SqrMagnitude(target.transform.position - transform.position) < AttackRange)
+                {
+                    ChangeAIState(AIState.Chase);
+                }
+                if (!CanSee(target))
+                {
+                    target = null;
+                    ChangeAIState(AIState.Scan);
+                    return;
+                }
                 break;
             case AIState.Scan:
                 // Do that states behavior
                 DoScanState();
                 // Check for transistions
+                foreach (Controller playerController in GameManager.Instance.players)
+                {
+                    if (CanSee(playerController))
+                    {
+                        target = playerController;
+                        ChangeAIState(AIState.Chase);
+                        return;
+                    }
+                    if (CanHear(playerController.gameObject))
+                    {
+                        ChangeAIState(AIState.Idle);
+                        return;
+                    }
+                }
+                if (Time.time - lastStateChangeTime > 3f)
+                {
+                    ChangeAIState(AIState.BacktoPoint);
+                    return;
+                }
                 break;
             case AIState.BacktoPoint:
                 // Do that states behavior
                 DoReturnState();
                 // Check for transistions
+                if (Vector3.SqrMagnitude(post.transform.position - transform.position) <= 1f)
+                {
+                    ChangeAIState(AIState.Idle);
+                    return;
+                }
                 break;
             default:
                 Debug.LogWarning("AI controller doesn't have that state implemented");
@@ -68,19 +129,33 @@ public class AIController : Controller
         }
     }
 
+    private bool CanHear(GameObject gameObject)
+    {
+        return false;
+    }
+
+    private bool CanSee(Controller playerController)
+    {
+        return false;
+    }
+
     private void DoReturnState()
     {
-        //throw new NotImplementedException();
+        pawn.RotateTowards(post.transform.position);
+
+        pawn.MoveForward();
     }
 
     private void DoScanState()
     {
-        //throw new NotImplementedException();
+        // Rotate Clockwise
+        pawn.Rotate(1);
     }
 
     private void DoAttackState()
     {
-        //throw new NotImplementedException();
+        pawn.RotateTowards(target.transform.position);
+        pawn.Shoot();
     }
 
     private void DoPatrolState()
@@ -102,7 +177,7 @@ public class AIController : Controller
         pawn.MoveForward();
     }
 
-    private void DoGuardState()
+    private void DoIdleState()
     {
         //throw new NotImplementedException();
     }
