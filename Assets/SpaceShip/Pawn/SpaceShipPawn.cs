@@ -22,21 +22,18 @@ public class SpaceShipPawn : Pawn
 
     public override void MoveBackward()
     {
-        Debug.Log("Move Backwards");
         mover.Move(backwardMoveSpeed, BackwardDirection);
         base.MoveBackward();
     }
 
     public override void MoveForward()
     {
-        Debug.Log("Move Forwards");
         mover.Move(forwardMoveSpeed, ForwardDirection);
         base.MoveForward();
     }
 
     public override void Rotate(float direction)
     {
-        Debug.Log("Rotate");
         mover.Rotate(shipRotationSpeed, direction);
         base.Rotate(direction);
     }

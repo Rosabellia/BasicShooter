@@ -11,6 +11,7 @@ public class AIController : Controller
     public float AttackRange = 100f;
     public Controller target;
     public Transform post;
+    public float felildOfView = 30f;
 
     public override void Start()
     {
@@ -35,7 +36,7 @@ public class AIController : Controller
                 // Check for transistions
                 foreach (Controller playerController in GameManager.Instance.players)
                 {
-                    if (CanSee(playerController))
+                    if (CanSee(playerController.gameObject))
                     {
                         target = playerController;
                         ChangeAIState(AIState.Chase);
@@ -53,7 +54,7 @@ public class AIController : Controller
                 DoChaseState();
 
                 // Check for transistions
-                if (!CanSee(target))
+                if (!CanSee(target.gameObject))
                 {
                     target = null;
                     ChangeAIState(AIState.Scan);
@@ -82,7 +83,7 @@ public class AIController : Controller
                 {
                     ChangeAIState(AIState.Chase);
                 }
-                if (!CanSee(target))
+                if (!CanSee(target.gameObject))
                 {
                     target = null;
                     ChangeAIState(AIState.Scan);
@@ -95,7 +96,7 @@ public class AIController : Controller
                 // Check for transistions
                 foreach (Controller playerController in GameManager.Instance.players)
                 {
-                    if (CanSee(playerController))
+                    if (CanSee(playerController.gameObject))
                     {
                         target = playerController;
                         ChangeAIState(AIState.Chase);
@@ -129,13 +130,28 @@ public class AIController : Controller
         }
     }
 
-    private bool CanHear(GameObject gameObject)
+    private bool CanHear(GameObject targetGameObject)
     {
+
         return false;
     }
 
-    private bool CanSee(Controller playerController)
+    private bool CanSee(GameObject targetGameObject)
     {
+        Vector3 agentToTargetVector = targetGameObject.transform.position - transform.position;
+        if (Vector3.Angle(agentToTargetVector ,transform.forward) <= felildOfView)
+        {
+            Vector3 raycastDirection = targetGameObject.transform.position - pawn.transform.position;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, raycastDirection.normalized, out hit))
+            {
+                if(hit.collider != null)
+                {
+                    return (hit.collider.gameObject == targetGameObject);
+                }
+            }
+        }
         return false;
     }
 
