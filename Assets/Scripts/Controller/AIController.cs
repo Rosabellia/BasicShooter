@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class AIController : Controller
 {
-    public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint}
+    public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint, FindPlayer, FindLowestAllie}
+    public enum AIPersonality { Protector, TargetLowHealthPlayer, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
     public AIState currentState = AIState.Chase;
+    public AIPersonality personality= AIPersonality.FromSeen;
     private float lastStateChangeTime = 0f;
-    public float AttackRange = 100f;
+    public float attackRange = 100f;
     public Controller target;
     public Transform post;
     public float felildOfView = 30f;
@@ -59,7 +61,7 @@ public class AIController : Controller
                     target = null;
                     ChangeAIState(AIState.Scan);
                 }
-                if(Vector3.SqrMagnitude(target.transform.position - transform.position) <= AttackRange)
+                if (Vector3.SqrMagnitude(target.transform.position - transform.position) > attackRange)
                 {
                     ChangeAIState(AIState.Attack);
                     return;
@@ -79,7 +81,7 @@ public class AIController : Controller
                 // Do that states behavior
                 DoAttackState();
                 // Check for transistions
-                if (Vector3.SqrMagnitude(target.transform.position - transform.position) < AttackRange)
+                if (Vector3.SqrMagnitude(target.transform.position - transform.position) > attackRange)
                 {
                     ChangeAIState(AIState.Chase);
                 }
@@ -110,6 +112,10 @@ public class AIController : Controller
                 }
                 if (Time.time - lastStateChangeTime > 3f)
                 {
+                    if (personality == AIPersonality.Protector)
+                    {
+                        ChangeAIState(AIState.FindLowestAllie);
+                    }
                     ChangeAIState(AIState.BacktoPoint);
                     return;
                 }
@@ -124,10 +130,43 @@ public class AIController : Controller
                     return;
                 }
                 break;
+            case AIState.FindLowestAllie:
+                // Do that states behavior
+                DoProtectAllie();
+                // Check for transistions
+                if (Time.time - lastStateChangeTime > 10f)
+                {
+                    ChangeAIState(AIState.BacktoPoint);
+                    return;
+                }
+                break;
+            case AIState.FindPlayer:
+                // Do that states behavior
+                DoFindPlayer();
+                // Check for transistions
+                break;
             default:
                 Debug.LogWarning("AI controller doesn't have that state implemented");
                 break;
         }
+    }
+
+    private void DoFindPlayer()
+    {
+        if (personality == AIPersonality.TargetClosestPlayer) 
+        {
+
+        }
+
+        if (personality == AIPersonality.TargetFarthestPlayer)
+        {
+
+        }
+    }
+
+    private void DoProtectAllie()
+    {
+        //throw new NotImplementedException();
     }
 
     private bool CanHear(GameObject targetGameObject)

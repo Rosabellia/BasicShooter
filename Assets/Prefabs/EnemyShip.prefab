@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyShip
       objectReference: {fileID: 0}
+    - target: {fileID: 8072582308084710718, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
+      propertyPath: shellLifespan
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
 --- !u!1 &1625589683348882893 stripped
@@ -75,9 +79,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
-  AttackRange: 100
-  target: {fileID: 6796675524214898361, guid: 8d2b28226d4c2a645b5301ee09715075, type: 3}
+  personality: 4
+  attackRange: 100
+  target: {fileID: 0}
   post: {fileID: 0}
+  felildOfView: 30
 --- !u!114 &-1650629610449566463
 MonoBehaviour:
   m_ObjectHideFlags: 0
