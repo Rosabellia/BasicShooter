@@ -7,18 +7,32 @@ public class AIController : Controller
 {
     public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint, FindPlayer, FindLowestAllie}
     public enum AIPersonality { Protector, TargetLowHealthPlayer, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
+
     public AIState currentState = AIState.Chase;
     public AIPersonality personality= AIPersonality.FromSeen;
+
     private float lastStateChangeTime = 0f;
     public float attackRange = 100f;
-    public Controller target;
+    public GameObject target;
     public Transform post;
-    public float felildOfView = 30f;
+    public float fieldOfView = 30f;
+
+    private float firstVector;
+    private float secondVector = -1;
+    public float huntPlayer = 25f;
+
+    private Health firstAlly;
+    private Health secondAlly;
 
     public override void Start()
     {
         pawn = GetComponent<Pawn>();
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.enemies.Add(this);
+        }
         post = transform;
+        secondAlly = this.gameObject.GetComponent<Health>();
         base.Start();
     }
 
@@ -40,7 +54,7 @@ public class AIController : Controller
                 {
                     if (CanSee(playerController.gameObject))
                     {
-                        target = playerController;
+                        target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
                         return;
                     }
@@ -61,7 +75,7 @@ public class AIController : Controller
                     target = null;
                     ChangeAIState(AIState.Scan);
                 }
-                if (Vector3.SqrMagnitude(target.transform.position - transform.position) > attackRange)
+                if (Vector3.SqrMagnitude(target.transform.position - transform.position) < attackRange)
                 {
                     ChangeAIState(AIState.Attack);
                     return;
@@ -98,25 +112,46 @@ public class AIController : Controller
                 // Check for transistions
                 foreach (Controller playerController in GameManager.Instance.players)
                 {
+                    // If player is within feild of view
                     if (CanSee(playerController.gameObject))
                     {
-                        target = playerController;
+                        target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
                         return;
                     }
+
+                    // If player is making noise near by
                     if (CanHear(playerController.gameObject))
                     {
-                        ChangeAIState(AIState.Idle);
+                        ChangeAIState(AIState.Scan);
                         return;
                     }
                 }
+
+                // If it has been 3 seconds
                 if (Time.time - lastStateChangeTime > 3f)
                 {
+
                     if (personality == AIPersonality.Protector)
                     {
                         ChangeAIState(AIState.FindLowestAllie);
                     }
-                    ChangeAIState(AIState.BacktoPoint);
+
+                     else if (personality == AIPersonality.TargetFarthestPlayer)
+                    {
+                        ChangeAIState(AIState.FindPlayer);
+                    }
+
+                    else if (personality == AIPersonality.TargetClosestPlayer)
+                    {
+                        ChangeAIState(AIState.FindPlayer);
+                    }
+
+                    else
+                    {
+                        ChangeAIState(AIState.BacktoPoint);
+                    }
+
                     return;
                 }
                 break;
@@ -132,41 +167,133 @@ public class AIController : Controller
                 break;
             case AIState.FindLowestAllie:
                 // Do that states behavior
-                DoProtectAllie();
+                 
+                 if (!target)
+                {
+                    // Check each aiController for distance
+                    foreach (Controller aiController in GameManager.Instance.enemies)
+                    {
+                        // Get first aiController
+                        firstAlly = aiController.gameObject.GetComponent<Health>();
+
+                        if (firstAlly != this.gameObject.GetComponent<Health>())
+                        {
+                            // change secondAlly to firstAlly
+                            if (firstAlly.currentHealth < secondAlly.currentHealth)
+                            {
+                                secondAlly = firstAlly;
+
+                            }
+
+                            // if firstAlly is the same as SecondVector make that the target
+                            if (firstAlly.gameObject == secondAlly.gameObject)
+                            {
+                                target = aiController.gameObject;
+                            }
+                        }
+                    }
+                }
+
                 // Check for transistions
-                if (Time.time - lastStateChangeTime > 10f)
+                if (Time.time - lastStateChangeTime > huntPlayer)
                 {
                     ChangeAIState(AIState.BacktoPoint);
                     return;
                 }
+
+                DoChaseState();
                 break;
             case AIState.FindPlayer:
                 // Do that states behavior
-                DoFindPlayer();
+                // Do that states behavior
+
+                if (personality == AIPersonality.TargetClosestPlayer)
+                {
+                    //If there is no target
+                    if (!target)
+                    {
+                        // Check each playerController for distance
+                        foreach (Controller playerController in GameManager.Instance.players)
+                        {
+                            // Get first playerController
+                            firstVector = Vector3.Distance(playerController.transform.position, transform.position);
+
+                            // If seconfVector is at default
+                            if (secondVector == -1)
+                            {
+                                secondVector = firstVector;
+
+                            }
+
+                            // change secondVector to firstVector
+                            if (firstVector < secondVector)
+                            {
+                                secondVector = firstVector;
+
+                            }
+
+                            // if firstVector is the same as SecondVector make that the target
+                            if (firstVector == secondVector)
+                            {
+                                target = playerController.gameObject;
+                            }
+
+                        }
+                    }
+                }
+
+                if (personality == AIPersonality.TargetFarthestPlayer)
+                {
+                    //If there is no target
+                    if (!target)
+                    {
+                        // Check each playerController for distance
+                        foreach (Controller playerController in GameManager.Instance.players)
+                        {
+                            // Get first playerController
+                            firstVector = Vector3.Distance(playerController.transform.position, transform.position);
+
+                            // If seconfVector is at default
+                            if (secondVector == -1)
+                            {
+                                secondVector = firstVector;
+
+                            }
+
+                            // change secondVector to firstVector
+                            if (firstVector > secondVector)
+                            {
+                                secondVector = firstVector;
+
+                            }
+
+                            // if firstVector is the same as SecondVector make that the target
+                            if (firstVector == secondVector)
+                            {
+                                target = playerController.gameObject;
+                            }
+
+                        }
+                    }
+                }
+
                 // Check for transistions
+
+                // Change state back to scan
+                if (Time.time - lastStateChangeTime > huntPlayer)
+                {
+                    target = null;
+                    ChangeAIState(AIState.Scan);
+                }
+
+                // Move towards target
+                DoChaseState();
+
                 break;
             default:
                 Debug.LogWarning("AI controller doesn't have that state implemented");
                 break;
         }
-    }
-
-    private void DoFindPlayer()
-    {
-        if (personality == AIPersonality.TargetClosestPlayer) 
-        {
-
-        }
-
-        if (personality == AIPersonality.TargetFarthestPlayer)
-        {
-
-        }
-    }
-
-    private void DoProtectAllie()
-    {
-        //throw new NotImplementedException();
     }
 
     private bool CanHear(GameObject targetGameObject)
@@ -178,16 +305,18 @@ public class AIController : Controller
     private bool CanSee(GameObject targetGameObject)
     {
         Vector3 agentToTargetVector = targetGameObject.transform.position - transform.position;
-        if (Vector3.Angle(agentToTargetVector ,transform.forward) <= felildOfView)
-        {
-            Vector3 raycastDirection = targetGameObject.transform.position - pawn.transform.position;
 
+        if (Vector3.Angle(agentToTargetVector, transform.forward) <= fieldOfView)
+        {
+
+            Vector3 raycastDirection = targetGameObject.transform.position - pawn.transform.position;
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, raycastDirection.normalized, out hit))
+            Physics.Raycast(transform.position, raycastDirection, out hit);
+            if (Physics.Raycast(transform.position, raycastDirection, out hit))
             {
-                if(hit.collider != null)
+                if (hit.collider.transform.parent != null)
                 {
-                    return (hit.collider.gameObject == targetGameObject);
+                    return (hit.collider.transform.parent.gameObject == targetGameObject);
                 }
             }
         }
@@ -227,9 +356,16 @@ public class AIController : Controller
     {
         //throw new NotImplementedException();
         //Turn to fave target
-        pawn.RotateTowards(target.transform.position);
-        //Move Forward
-        pawn.MoveForward();
+        if (target)
+        {
+            pawn.RotateTowards(target.transform.position);
+            //Move Forward
+            pawn.MoveForward();
+        }
+        if (!target)
+        {
+            Debug.LogWarning("Target is not assigned");
+        }
     }
 
     private void DoIdleState()
