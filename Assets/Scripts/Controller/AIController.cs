@@ -8,11 +8,11 @@ public class AIController : Controller
     public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint, FindPlayer, FindLowestAllie}
     public enum AIPersonality { Protector, TargetLowHealthPlayer, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
 
-    public AIState currentState = AIState.Chase;
+    public AIState currentState = AIState.Scan;
     public AIPersonality personality= AIPersonality.FromSeen;
 
     private float lastStateChangeTime = 0f;
-    public float attackRange = 100f;
+    public float attackRange = 1500f;
     public GameObject target;
     public Transform post;
     public float fieldOfView = 30f;
@@ -64,19 +64,28 @@ public class AIController : Controller
                         return;
                     }
                 }
+
+                if (Time.time - lastStateChangeTime > 3f)
+                {
+                    ChangeAIState(AIState.Scan);
+                    return;
+                }
+
                 break;
             case AIState.Chase:
-                // Do that states behavior
+                // Do that state's behavior
                 DoChaseState();
-
-                // Check for transistions
-                if (!CanSee(target.gameObject))
+                // Check for transitions
+                if (!CanSee(target))
                 {
                     target = null;
                     ChangeAIState(AIState.Scan);
+                    return;
                 }
-                if (Vector3.SqrMagnitude(target.transform.position - transform.position) < attackRange)
+
+                if (Vector3.SqrMagnitude(target.transform.position - transform.position) <= attackRange)
                 {
+                    Debug.Log("Work!!!!");
                     ChangeAIState(AIState.Attack);
                     return;
                 }
@@ -305,18 +314,16 @@ public class AIController : Controller
     private bool CanSee(GameObject targetGameObject)
     {
         Vector3 agentToTargetVector = targetGameObject.transform.position - transform.position;
-
         if (Vector3.Angle(agentToTargetVector, transform.forward) <= fieldOfView)
         {
-
             Vector3 raycastDirection = targetGameObject.transform.position - pawn.transform.position;
+
             RaycastHit hit;
-            Physics.Raycast(transform.position, raycastDirection, out hit);
-            if (Physics.Raycast(transform.position, raycastDirection, out hit))
+            if (Physics.Raycast(transform.position, raycastDirection.normalized, out hit))
             {
-                if (hit.collider.transform.parent != null)
+                if (hit.collider != null)
                 {
-                    return (hit.collider.transform.parent.gameObject == targetGameObject);
+                    return (hit.collider.gameObject == targetGameObject);
                 }
             }
         }
