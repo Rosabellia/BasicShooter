@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class AIController : Controller
@@ -8,14 +9,19 @@ public class AIController : Controller
     public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint, FindPlayer, FindLowestAllie}
     public enum AIPersonality { Protector, TargetLowHealthPlayer, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
 
+    public Transform[] waypoints;
+    private float waypointStopDistance;
+    private int currentWaypoint = 0;
+
     public AIState currentState = AIState.Scan;
     public AIPersonality personality= AIPersonality.FromSeen;
 
-    private float lastStateChangeTime = 0f;
+    [HideInInspector] public float lastStateChangeTime = 0f;
     public float attackRange = 1500f;
     public GameObject target;
     public Transform post;
     public float fieldOfView = 30f;
+    public float fleeDistance = 50;
 
     private float firstVector;
     private float secondVector = -1;
@@ -23,6 +29,7 @@ public class AIController : Controller
 
     private Health firstAlly;
     private Health secondAlly;
+    private Health thisEnemy;
 
     public override void Start()
     {
@@ -33,6 +40,7 @@ public class AIController : Controller
         }
         post = transform;
         secondAlly = this.gameObject.GetComponent<Health>();
+        thisEnemy = this.gameObject.GetComponent<Health>();
         base.Start();
     }
 
@@ -74,7 +82,7 @@ public class AIController : Controller
                 break;
             case AIState.Chase:
                 // Do that state's behavior
-                DoChaseState();
+                DoChaseState(target.transform.position);
                 // Check for transitions
                 if (!CanSee(target))
                 {
@@ -94,6 +102,12 @@ public class AIController : Controller
                 // Do that states behavior
                 DoFleeState();
                 // Check for transistions
+                if (Time.time - lastStateChangeTime > fleeDistance)
+                {
+                    target = null;
+                    ChangeAIState(AIState.Scan);
+                }
+
                 break;
             case AIState.Patrol:
                 // Do that states behavior
@@ -113,6 +127,10 @@ public class AIController : Controller
                     target = null;
                     ChangeAIState(AIState.Scan);
                     return;
+                }
+                if(thisEnemy.currentHealth < 50)
+                {
+                    ChangeAIState(AIState.Flee);
                 }
                 break;
             case AIState.Scan:
@@ -140,27 +158,18 @@ public class AIController : Controller
                 // If it has been 3 seconds
                 if (Time.time - lastStateChangeTime > 3f)
                 {
-
                     if (personality == AIPersonality.Protector)
                     {
                         ChangeAIState(AIState.FindLowestAllie);
                     }
-
-                     else if (personality == AIPersonality.TargetFarthestPlayer)
+                    if (personality == AIPersonality.TargetFarthestPlayer)
                     {
                         ChangeAIState(AIState.FindPlayer);
                     }
-
-                    else if (personality == AIPersonality.TargetClosestPlayer)
-                    {
-                        ChangeAIState(AIState.FindPlayer);
-                    }
-
-                    else
+                    if (personality == AIPersonality.FromSeen)
                     {
                         ChangeAIState(AIState.BacktoPoint);
                     }
-
                     return;
                 }
                 break;
@@ -210,7 +219,7 @@ public class AIController : Controller
                     return;
                 }
 
-                DoChaseState();
+                DoChaseState(target.transform.position);
                 break;
             case AIState.FindPlayer:
                 // Do that states behavior
@@ -296,7 +305,7 @@ public class AIController : Controller
                 }
 
                 // Move towards target
-                DoChaseState();
+                DoChaseState(target.transform.position);
 
                 break;
             default:
@@ -305,13 +314,13 @@ public class AIController : Controller
         }
     }
 
-    private bool CanHear(GameObject targetGameObject)
+    protected bool CanHear(GameObject targetGameObject)
     {
 
         return false;
     }
 
-    private bool CanSee(GameObject targetGameObject)
+    protected bool CanSee(GameObject targetGameObject)
     {
         Vector3 agentToTargetVector = targetGameObject.transform.position - transform.position;
         if (Vector3.Angle(agentToTargetVector, transform.forward) <= fieldOfView)
@@ -330,44 +339,71 @@ public class AIController : Controller
         return false;
     }
 
-    private void DoReturnState()
+    protected void DoReturnState()
     {
         pawn.RotateTowards(post.transform.position);
 
         pawn.MoveForward();
     }
 
-    private void DoScanState()
+    protected void DoScanState()
     {
         // Rotate Clockwise
         pawn.Rotate(1);
     }
 
-    private void DoAttackState()
+    protected void DoAttackState()
     {
         pawn.RotateTowards(target.transform.position);
         pawn.Shoot();
     }
 
-    private void DoPatrolState()
+    protected void DoPatrolState()
     {
-        //throw new NotImplementedException();
+        
+        if (waypoints.Length > currentWaypoint)
+        {
+
+            DoChaseState(waypoints[currentWaypoint].position);
+
+            if (Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) <= waypointStopDistance)
+            {
+                
+                currentWaypoint++;
+            }
+        }
+        else
+        {
+            RestartPatrol();
+        }
     }
 
-    private void DoFleeState()
+    protected void RestartPatrol()
     {
-        //throw new NotImplementedException();
+        currentWaypoint = 0;
     }
 
-    private void DoChaseState()
+    protected void DoFleeState()
     {
-        //throw new NotImplementedException();
-        //Turn to fave target
         if (target)
         {
-            pawn.RotateTowards(target.transform.position);
-            //Move Forward
-            pawn.MoveForward();
+            Vector3 vectorTarget = target.transform.position - pawn.transform.position;
+
+            Vector3 vectorAwayFromTarget = -vectorTarget;
+
+            float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
+            float percentOffDistance = targetDistance / fleeDistance;
+
+            percentOffDistance = Mathf.Clamp01(percentOffDistance);
+
+            float flippedPercentOffDistance = 1 - percentOffDistance;
+
+
+            Vector3 fleeVector = vectorAwayFromTarget.normalized * flippedPercentOffDistance;
+
+            DoChaseState(fleeVector);
+
+
         }
         if (!target)
         {
@@ -375,7 +411,16 @@ public class AIController : Controller
         }
     }
 
-    private void DoIdleState()
+    protected void DoChaseState(Vector3 location)
+    {
+        //throw new NotImplementedException();
+        //Turn to fave target
+        pawn.RotateTowards(location);
+        //Move Forward
+        pawn.MoveForward();
+    }
+
+    protected void DoIdleState()
     {
         //throw new NotImplementedException();
     }
