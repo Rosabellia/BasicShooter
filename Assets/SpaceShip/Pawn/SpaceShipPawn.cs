@@ -7,7 +7,7 @@ public class SpaceShipPawn : Pawn
 {
     public const float ForwardDirection = 1f; // Makes ship move forward
     public const float BackwardDirection = -1f; // negatives make the ship move backwards
-    public float forwardMoveSpeed = 50f; // How fast the ship moves forward
+    public float baseforwardMoveSpeed = 50f; // How fast the ship moves forward
     public float backwardMoveSpeed = 30f; // How fast the ship moves backward
     public float shipRotationSpeed = 30f; // How fast the ship turns
     public float fireForce = 1000f;
@@ -16,7 +16,18 @@ public class SpaceShipPawn : Pawn
     public float shotCooldownTime = 1f;
     public GameObject shellPrefab;
 
+    public float moveSpeedBonus = 0f;
+    public float moveSpeedMultiplier = 1f;
+
     private float secondsSinceLastShot = Mathf.Infinity;
+
+    public float CalculatedForwardMoveSpeed
+    {
+        get
+        {
+            return (baseforwardMoveSpeed * moveSpeedMultiplier) + moveSpeedBonus;
+        }
+    }
 
 
 
@@ -28,7 +39,7 @@ public class SpaceShipPawn : Pawn
 
     public override void MoveForward()
     {
-        mover.Move(forwardMoveSpeed, ForwardDirection);
+        mover.Move(CalculatedForwardMoveSpeed, ForwardDirection);
         base.MoveForward();
     }
 

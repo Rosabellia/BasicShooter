@@ -10,7 +10,7 @@ public class AIController : Controller
     public enum AIPersonality { Protector, TargetLowHealthPlayer, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
 
     public Transform[] waypoints;
-    private float waypointStopDistance;
+    private float waypointStopDistance = 0;
     private int currentWaypoint = 0;
 
     public AIState currentState = AIState.Scan;
@@ -93,7 +93,6 @@ public class AIController : Controller
 
                 if (Vector3.SqrMagnitude(target.transform.position - transform.position) <= attackRange)
                 {
-                    Debug.Log("Work!!!!");
                     ChangeAIState(AIState.Attack);
                     return;
                 }
@@ -128,10 +127,10 @@ public class AIController : Controller
                     ChangeAIState(AIState.Scan);
                     return;
                 }
-                if(thisEnemy.currentHealth < 50)
+                /* if(thisEnemy.currentHealth < 50f)
                 {
                     ChangeAIState(AIState.Flee);
-                }
+                } */
                 break;
             case AIState.Scan:
                 // Do that states behavior

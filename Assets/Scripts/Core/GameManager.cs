@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public int points = 0; // Player points
     public List<Controller> players = new List<Controller>(); // List of players
     public List<Controller> enemies = new List<Controller>(); // List of enemies
+    public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
 
     private void Awake()
     {
@@ -26,5 +27,22 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         
+    }
+
+    void SpawnPlayer()
+    {
+        PawnSpawnPoint spawn = GetRandomSpawnPoint();
+        while(spawn.spawnedPawn != null) 
+        {
+            spawn = GetRandomSpawnPoint();
+            // MAKE SURE THERE ARE ENOUGH PAWN SPAWN POINTS SO THE GAME NEVER BREAKS
+        }
+
+
+    }
+
+    private PawnSpawnPoint GetRandomSpawnPoint()
+    {
+        return pawnSpawnPoints[Random.Range(0, pawnSpawnPoints.Count)];
     }
 }

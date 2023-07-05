@@ -8,11 +8,16 @@ public class HealthPowerup : Powerup
     public float HealthToAdd;
     public override void Apply(PowerupManager target)
     {
-        //throw new System.NotImplementedException();
+        Health targetHealth = target.gameObject.GetComponent<Health>();
+        if (targetHealth != null)
+        {
+            targetHealth.ApplyHealthing(HealthToAdd);
+        }
+
     }
 
     public override void Remove(PowerupManager target)
     {
-        //throw new System.NotImplementedException();
+        // Don't
     }
 }

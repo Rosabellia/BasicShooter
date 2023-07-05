@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4505063830135588124
+--- !u!1 &4132365606485632258
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8545557732648060096}
-  - component: {fileID: 5880539917914601836}
+  - component: {fileID: 4132365606485632284}
+  - component: {fileID: 4132365606485632285}
   m_Layer: 0
-  m_Name: PickupSpawner
+  m_Name: MapGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8545557732648060096
+--- !u!4 &4132365606485632284
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4505063830135588124}
+  m_GameObject: {fileID: 4132365606485632258}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -31.023449, y: 19.13465, z: 81.352295}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5880539917914601836
+--- !u!114 &4132365606485632285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4505063830135588124}
+  m_GameObject: {fileID: 4132365606485632258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e23d0b042fff38b45b34ceefb703a291, type: 3}
+  m_Script: {fileID: 11500000, guid: 314291ac2056c264e85435351b4b96da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupPrefab: {fileID: 7782211379578424642, guid: 00c07a0453c334a41af766671cb66fc3, type: 3}
-  spawnDelay: 0
+  roomPrefabs:
+  - {fileID: 121816, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+  - {fileID: 3038312177613217924, guid: 3f6b8f4008da5b7418ace5996018ae4d, type: 3}
+  rows: 3
+  colums: 3
+  roomWidth: 50
+  roomHeight: 50
