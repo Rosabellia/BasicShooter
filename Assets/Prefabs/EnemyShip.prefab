@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -471436484312079531, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5428582023676116555, guid: da5f35b578fe5a54593d2687a749d2a1, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -78,12 +82,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce30636c63ec8f74ca01633f676f883a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypoints: []
   currentState: 1
   personality: 4
+  lastStateChangeTime: 0
   attackRange: 100
   target: {fileID: 0}
   post: {fileID: 0}
-  felildOfView: 30
+  fieldOfView: 30
+  fleeDistance: 50
+  huntPlayer: 25
 --- !u!114 &-1650629610449566463
 MonoBehaviour:
   m_ObjectHideFlags: 0

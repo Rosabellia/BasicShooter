@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d237834dd2f9f0349a0d8095b8257402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardMoveSpeed: 100
+  baseforwardMoveSpeed: 50
   backwardMoveSpeed: 50
   shipRotationSpeed: 40
   fireForce: 1000
@@ -58,6 +58,8 @@ MonoBehaviour:
   shellLifespan: 2
   shotCooldownTime: 1
   shellPrefab: {fileID: 2614046803521498486, guid: c56a36d9f852c0c47aaab163ffb294d7, type: 3}
+  moveSpeedBonus: 0
+  moveSpeedMultiplier: 1
 --- !u!54 &7557030193078809187
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -69,7 +71,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
