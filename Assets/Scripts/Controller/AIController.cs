@@ -22,6 +22,8 @@ public class AIController : Controller
     public Transform post;
     public float fieldOfView = 30f;
     public float fleeDistance = 50;
+    public float hearingDistance = 100f;
+
 
     private float firstVector;
     private float secondVector = -1;
@@ -60,8 +62,10 @@ public class AIController : Controller
                 // Check for transistions
                 foreach (Controller playerController in GameManager.Instance.players)
                 {
+
                     if (CanSee(playerController.gameObject))
                     {
+                        Debug.Log("I saw a player");
                         target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
                         return;
@@ -111,6 +115,23 @@ public class AIController : Controller
             case AIState.Patrol:
                 // Do that states behavior
                 DoPatrolState();
+                 foreach (Controller playerController in GameManager.Instance.players)
+                {
+                    // If player is within feild of view
+                    if (CanSee(playerController.gameObject))
+                    {
+                        target = playerController.gameObject;
+                        ChangeAIState(AIState.Chase);
+                        return;
+                    }
+
+                    // If player is making noise near by
+                    if (CanHear(playerController.gameObject))
+                    {
+                        ChangeAIState(AIState.Scan);
+                        return;
+                    }
+                }
                 // Check for transistions
                 break;
             case AIState.Attack:
@@ -143,13 +164,6 @@ public class AIController : Controller
                     {
                         target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
-                        return;
-                    }
-
-                    // If player is making noise near by
-                    if (CanHear(playerController.gameObject))
-                    {
-                        ChangeAIState(AIState.Scan);
                         return;
                     }
                 }
@@ -315,8 +329,29 @@ public class AIController : Controller
 
     protected bool CanHear(GameObject targetGameObject)
     {
-
-        return false;
+        // Get the target's NoiseMaker
+        NoiseMaker noiseMaker = target.GetComponent<NoiseMaker>();
+        if (noiseMaker != null)
+        {
+            return false;
+        }
+        // if they are making 0 noise, then they still can't hear anything
+        if (noiseMaker.volumeDistance <= 0) 
+        {
+            return false;
+        }
+        // If they are making noise, add the volumeDistance in the noisemaker of this AI
+        float totalDistance = noiseMaker.volumeDistance + hearingDistance;
+        // If the distance between our pawn and the target is closer than this...
+        if (Vector3.Distance(pawn.transform.position, target.transform.position) <= totalDistance)
+        {
+            // ... then we can hear the target
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     protected bool CanSee(GameObject targetGameObject)
