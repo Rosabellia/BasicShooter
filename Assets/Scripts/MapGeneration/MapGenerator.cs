@@ -8,8 +8,8 @@ public class MapGenerator : MonoBehaviour
     public List<GameObject> roomPrefabs;
     public int rows = 3;
     public int colums = 3;
-    public float roomWidth = 50f;
-    public float roomHeight = 50f;
+    public float roomWidth = 200f;
+    public float roomHeight = 200f;
     private Room[,] grid;
     public int mapSeed = 45;
     public enum RandomType {  Seeded, Random, MapOfTheDay}
