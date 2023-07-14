@@ -83,14 +83,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
-  currentState: 1
-  personality: 4
+  currentState: 0
+  personality: 3
   lastStateChangeTime: 0
   attackRange: 100
   target: {fileID: 0}
   post: {fileID: 0}
   fieldOfView: 30
   fleeDistance: 50
+  hearingDistance: 100
   huntPlayer: 25
 --- !u!114 &-1650629610449566463
 MonoBehaviour:

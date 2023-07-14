@@ -6,9 +6,15 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int points = 0; // Player points
+    public int numberOfPlayers = 1;
+    [HideInInspector] public int playersSpawned = 0;
+    [HideInInspector] public int maxEnemies = 10;
     public List<Controller> players = new List<Controller>(); // List of players
     public List<Controller> enemies = new List<Controller>(); // List of enemies
     public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
+    public enum Difficulty { Easy, Medium, Hard }
+
+    public Difficulty difficulty = Difficulty.Easy;
 
     private void Awake()
     {
@@ -26,7 +32,22 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (difficulty == Difficulty.Easy)
+        {
+
+        }
+        else if (difficulty == Difficulty.Medium)
+        {
+
+        }
+        else if(difficulty == Difficulty.Hard) 
+        {
+
+        }
+        else
+        {
+            Debug.LogWarning("No difficult was set");
+        }
     }
 
     void SpawnPlayer()

@@ -7,10 +7,10 @@ using UnityEngine;
 public class AIController : Controller
 {
     public enum AIState { Idle, Chase, Flee, Patrol, Attack, Scan, BacktoPoint, FindPlayer, FindLowestAllie}
-    public enum AIPersonality { Protector, TargetLowHealthPlayer, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
+    public enum AIPersonality { Protector, TargetFarthestPlayer, TargetClosestPlayer, FromSeen };
 
     public Transform[] waypoints;
-    private float waypointStopDistance = 0;
+    private float waypointStopDistance = 1;
     private int currentWaypoint = 0;
 
     public AIState currentState = AIState.Scan;
@@ -65,13 +65,13 @@ public class AIController : Controller
 
                     if (CanSee(playerController.gameObject))
                     {
-                        Debug.Log("I saw a player");
                         target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
                         return;
                     }
                     if (CanHear(playerController.gameObject))
                     {
+                        target = playerController.gameObject;
                         ChangeAIState(AIState.Scan);
                         return;
                     }
@@ -117,17 +117,21 @@ public class AIController : Controller
                 DoPatrolState();
                  foreach (Controller playerController in GameManager.Instance.players)
                 {
+
                     // If player is within feild of view
-                    if (CanSee(playerController.gameObject))
+                    /*if (CanSee(playerController.gameObject))
                     {
+                        Debug.Log("I saw a player");
                         target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
                         return;
-                    }
+                    } */
 
                     // If player is making noise near by
                     if (CanHear(playerController.gameObject))
                     {
+                        Debug.Log("I hear a player");
+                        target = playerController.gameObject;
                         ChangeAIState(AIState.Scan);
                         return;
                     }
@@ -176,6 +180,10 @@ public class AIController : Controller
                         ChangeAIState(AIState.FindLowestAllie);
                     }
                     if (personality == AIPersonality.TargetFarthestPlayer)
+                    {
+                        ChangeAIState(AIState.FindPlayer);
+                    }
+                    if (personality == AIPersonality.TargetClosestPlayer)
                     {
                         ChangeAIState(AIState.FindPlayer);
                     }
@@ -330,7 +338,7 @@ public class AIController : Controller
     protected bool CanHear(GameObject targetGameObject)
     {
         // Get the target's NoiseMaker
-        NoiseMaker noiseMaker = target.GetComponent<NoiseMaker>();
+        NoiseMaker noiseMaker = targetGameObject.GetComponent<NoiseMaker>();
         if (noiseMaker != null)
         {
             return false;

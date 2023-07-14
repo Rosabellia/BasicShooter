@@ -50,10 +50,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d237834dd2f9f0349a0d8095b8257402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseforwardMoveSpeed: 50
-  backwardMoveSpeed: 50
-  shipRotationSpeed: 40
-  fireForce: 1000
+  baseforwardMoveSpeed: 500
+  backwardMoveSpeed: 250
+  shipRotationSpeed: 50
+  fireForce: 2000
   damageDone: 20
   shellLifespan: 2
   shotCooldownTime: 1
@@ -74,7 +74,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &-471436484312079531
 BoxCollider:
