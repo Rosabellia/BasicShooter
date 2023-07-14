@@ -234,6 +234,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 501794836224094979, guid: 3a4147a579d3fb64997daca134d6696a, type: 3}
+      propertyPath: attackRange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501794836224094979, guid: 3a4147a579d3fb64997daca134d6696a, type: 3}
+      propertyPath: hearingDistance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 501794836224094979, guid: 3a4147a579d3fb64997daca134d6696a, type: 3}
       propertyPath: waypoints.Array.data[0]
       value: 
       objectReference: {fileID: 1770406196}

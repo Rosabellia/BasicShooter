@@ -119,13 +119,13 @@ public class AIController : Controller
                 {
 
                     // If player is within feild of view
-                    /*if (CanSee(playerController.gameObject))
+                    if (CanSee(playerController.gameObject))
                     {
                         Debug.Log("I saw a player");
                         target = playerController.gameObject;
                         ChangeAIState(AIState.Chase);
                         return;
-                    } */
+                    }
 
                     // If player is making noise near by
                     if (CanHear(playerController.gameObject))
@@ -337,22 +337,9 @@ public class AIController : Controller
 
     protected bool CanHear(GameObject targetGameObject)
     {
-        // Get the target's NoiseMaker
-        NoiseMaker noiseMaker = targetGameObject.GetComponent<NoiseMaker>();
-        if (noiseMaker != null)
+        if (Vector3.Distance(transform.position, targetGameObject.transform.position) <= hearingDistance)
         {
-            return false;
-        }
-        // if they are making 0 noise, then they still can't hear anything
-        if (noiseMaker.volumeDistance <= 0) 
-        {
-            return false;
-        }
-        // If they are making noise, add the volumeDistance in the noisemaker of this AI
-        float totalDistance = noiseMaker.volumeDistance + hearingDistance;
-        // If the distance between our pawn and the target is closer than this...
-        if (Vector3.Distance(pawn.transform.position, target.transform.position) <= totalDistance)
-        {
+            Debug.Log("I can hear the player");
             // ... then we can hear the target
             return true;
         }
