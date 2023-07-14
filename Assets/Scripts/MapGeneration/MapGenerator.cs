@@ -17,6 +17,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
+        GenerateMap();
     }
 
     public GameObject RandomRoomPrefab()
@@ -91,11 +92,11 @@ public class MapGenerator : MonoBehaviour
                 {
                     grid[currentColumn, currentRow].doorNorth.SetActive(true);
                 }
-                if (currentRow == 0) // Bottom
+                if (currentColumn == 0) // Bottom
                 {
                     grid[currentColumn, currentRow].doorWest.SetActive(true);
                 }
-                if (currentRow == rows - 1)
+                if (currentColumn == colums - 1)
                 {
                     grid[currentColumn, currentRow].doorEast.SetActive(true);
                 }
