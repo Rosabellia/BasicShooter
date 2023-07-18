@@ -197,7 +197,7 @@ MonoBehaviour:
   backwardKeyCode: 115
   rightKeyCode: 100
   leftKeyCode: 97
-  shootKeyCode: 0
+  shootKeyCode: 32
 --- !u!114 &6954744327858079735
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d237834dd2f9f0349a0d8095b8257402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseforwardMoveSpeed: 500
-  backwardMoveSpeed: 250
+  baseforwardMoveSpeed: 250
+  backwardMoveSpeed: 125
   shipRotationSpeed: 50
   fireForce: 2000
   damageDone: 20
@@ -151,7 +151,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9062496516960209682}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.034, y: 1.041, z: 5.914}
+  m_LocalPosition: {x: 0.034, y: 1.041, z: 7.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

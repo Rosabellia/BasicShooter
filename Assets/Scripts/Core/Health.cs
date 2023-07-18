@@ -34,7 +34,9 @@ public class Health : MonoBehaviour
 
     public void ApplyHealthing(float value)
     {
-        if(value < 0)
+
+        Debug.Log(value);
+        if (value < 0)
         {
             Debug.LogWarning("Attempted to heal for negative amount.");
             return;

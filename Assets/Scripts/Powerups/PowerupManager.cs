@@ -1,45 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 public class PowerupManager : MonoBehaviour
 {
     public List<Powerup> powerups = new List<Powerup>();
     public List<Powerup> powerupsToRemove = new List<Powerup>();
     // Start is called before the first frame update
-    private void Start()
+    void Start()
     {
-        DecementPowerupTimers();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        DecrementPowerupTimers();
     }
 
-    // Update is called once per frame
-    public void Update()
+    private void LateUpdate()
     {
-        
+        ApplyRemovePowerupsQueue();
     }
 
     // The Add function will eventually add a powerup
-    public void Add (Powerup PowerupToAdd)
+    public void Add(Powerup powerupToAdd)
     {
-        PowerupToAdd.Apply(this);
-        if (!PowerupToAdd.isPermenat)
+        powerupToAdd.Apply(this);
+        if (!powerupToAdd.isPermanent)
         {
-            powerups.Add(PowerupToAdd);
+            powerups.Add(powerupToAdd);
         }
     }
 
-    // The Add function will eventually add a powerup
-    public void Remove (Powerup PowerupToRemove)
+    // The Remove function may eventually remove a powerup
+    public void Remove(Powerup powerupToRemove)
     {
-        PowerupToRemove.Remove(this);
-        powerups.Remove(PowerupToRemove);
+        powerupToRemove.Remove(this);
+        powerups.Remove(powerupToRemove);
     }
 
-    public void DecementPowerupTimers()
+    public void DecrementPowerupTimers()
     {
+        // One-at-a-time, put each object in "powerups" into the variable "powerup" and do the loop body on it
         foreach (Powerup powerup in powerups)
         {
+            // Subtract the time it took to draw the frame from the duration
             powerup.duration -= Time.deltaTime;
-
+            // If time is up, we want to remove this powerup
             if (powerup.duration <= 0)
             {
                 powerupsToRemove.Add(powerup);
@@ -47,12 +54,15 @@ public class PowerupManager : MonoBehaviour
         }
     }
 
-    private void RemovePowerUpQue()
+    private void ApplyRemovePowerupsQueue()
     {
-        foreach(Powerup powerup in powerupsToRemove)
+        // Now that we are sure we are not iterating through "powerups", remove the powerups that are in our temporary list
+        foreach (Powerup powerup in powerupsToRemove)
         {
+            Remove(powerup);
             powerups.Remove(powerup);
         }
+        // And reset our temporary list
         powerupsToRemove.Clear();
     }
 }

@@ -60,22 +60,7 @@ public class AIController : Controller
                 // Do that states behavior
                 DoIdleState();
                 // Check for transistions
-                foreach (Controller playerController in GameManager.Instance.players)
-                {
-
-                    if (CanSee(playerController.gameObject))
-                    {
-                        target = playerController.gameObject;
-                        ChangeAIState(AIState.Chase);
-                        return;
-                    }
-                    if (CanHear(playerController.gameObject))
-                    {
-                        target = playerController.gameObject;
-                        ChangeAIState(AIState.Scan);
-                        return;
-                    }
-                }
+                CanSensePlayer();
 
                 if (Time.time - lastStateChangeTime > 3f)
                 {
@@ -115,27 +100,8 @@ public class AIController : Controller
             case AIState.Patrol:
                 // Do that states behavior
                 DoPatrolState();
-                 foreach (Controller playerController in GameManager.Instance.players)
-                {
+                CanSensePlayer();
 
-                    // If player is within feild of view
-                    if (CanSee(playerController.gameObject))
-                    {
-                        Debug.Log("I saw a player");
-                        target = playerController.gameObject;
-                        ChangeAIState(AIState.Chase);
-                        return;
-                    }
-
-                    // If player is making noise near by
-                    if (CanHear(playerController.gameObject))
-                    {
-                        Debug.Log("I hear a player");
-                        target = playerController.gameObject;
-                        ChangeAIState(AIState.Scan);
-                        return;
-                    }
-                }
                 // Check for transistions
                 break;
             case AIState.Attack:
@@ -200,7 +166,7 @@ public class AIController : Controller
                 // Check for transistions
                 if (Vector3.SqrMagnitude(post.transform.position - transform.position) <= 1f)
                 {
-                    ChangeAIState(AIState.Idle);
+                    ChangeAIState(AIState.Patrol);
                     return;
                 }
                 break;
@@ -245,6 +211,8 @@ public class AIController : Controller
             case AIState.FindPlayer:
                 // Do that states behavior
                 // Do that states behavior
+
+                CanSensePlayer();
 
                 if (personality == AIPersonality.TargetClosestPlayer)
                 {
@@ -452,6 +420,31 @@ public class AIController : Controller
     protected void DoIdleState()
     {
         //throw new NotImplementedException();
+    }
+
+    protected void CanSensePlayer()
+    {
+        foreach (Controller playerController in GameManager.Instance.players)
+        {
+
+            // If player is within feild of view
+            if (CanSee(playerController.gameObject))
+            {
+                Debug.Log("I saw a player");
+                target = playerController.gameObject;
+                ChangeAIState(AIState.Chase);
+                return;
+            }
+
+            // If player is making noise near by
+            if (CanHear(playerController.gameObject))
+            {
+                Debug.Log("I hear a player");
+                target = playerController.gameObject;
+                ChangeAIState(AIState.Scan);
+                return;
+            }
+        }
     }
 
     public void ChangeAIState(AIState newState)
