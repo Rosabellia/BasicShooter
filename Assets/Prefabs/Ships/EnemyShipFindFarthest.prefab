@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: personality
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1650629610449566463, guid: 821c2d24fffc6cb47ae9a56332132b41, type: 3}
+      propertyPath: maxHealth
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -1650629610449566463, guid: 821c2d24fffc6cb47ae9a56332132b41, type: 3}
+      propertyPath: currentHealth
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 212361302153439237, guid: 821c2d24fffc6cb47ae9a56332132b41, type: 3}
       propertyPath: m_RootOrder
       value: 0

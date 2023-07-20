@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : PawnSpawnPoint
+public class EnemySpawner : MonoBehaviour
 {
+    public GameObject spawnedPawn;
     public float spawnDelay = 200f;
     public bool spawnImmediately = true;
     private float secondsSinceLastSpawn;
 
 
-    public override void Start()
+    public void Start()
     {
         if (spawnImmediately)
         {
@@ -19,10 +20,9 @@ public class EnemySpawner : PawnSpawnPoint
         {
             secondsSinceLastSpawn = spawnDelay;
         }
-        base.Start();
     }
 
-    public override void Update()
+    public void Update()
     {
         secondsSinceLastSpawn += Time.deltaTime;
         if (GameManager.Instance.enemies.Count < GameManager.Instance.maxEnemies)
@@ -32,7 +32,5 @@ public class EnemySpawner : PawnSpawnPoint
                 Instantiate(spawnedPawn, transform.position, Quaternion.identity);
             }
         }
-
-        base.Update();
     }
 }

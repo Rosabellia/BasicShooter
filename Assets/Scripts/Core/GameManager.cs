@@ -5,16 +5,26 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public int points = 0; // Player points
+    public List<int> points = new List<int>();
     public int numberOfPlayers = 1;
     [HideInInspector] public int playersSpawned = 0;
     [HideInInspector] public int maxEnemies = 10;
     public List<Controller> players = new List<Controller>(); // List of players
     public List<Controller> enemies = new List<Controller>(); // List of enemies
     public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
+    public GameObject playerPawn;
     public enum Difficulty { Easy, Medium, Hard }
-
     public Difficulty difficulty = Difficulty.Easy;
+    public enum GameState { TitleState, OptionsState, GameplayerState, GameOverState, CreditsState, PauseState };
+    public GameState currentGameState = GameState.TitleState;
+    private GameState previousGameState;
+
+
+    public void ChangeGameState(GameState state)
+    {
+        previousGameState = currentGameState;
+        currentGameState = state;
+    }
 
     private void Awake()
     {
@@ -59,6 +69,7 @@ public class GameManager : MonoBehaviour
             // MAKE SURE THERE ARE ENOUGH PAWN SPAWN POINTS SO THE GAME NEVER BREAKS
         }
 
+        Instantiate(playerPawn, spawn.transform.position, Quaternion.identity);
 
     }
 

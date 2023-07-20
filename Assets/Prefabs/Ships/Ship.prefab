@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d237834dd2f9f0349a0d8095b8257402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseforwardMoveSpeed: 250
-  backwardMoveSpeed: 125
-  shipRotationSpeed: 50
+  baseforwardMoveSpeed: 125
+  backwardMoveSpeed: 75
+  shipRotationSpeed: 75
   fireForce: 2000
   damageDone: 20
   shellLifespan: 2

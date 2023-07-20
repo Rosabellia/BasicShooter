@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        //GenerateMap();
+        GenerateMap();
     }
 
     public GameObject RandomRoomPrefab()
