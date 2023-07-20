@@ -77,4 +77,19 @@ public class GameManager : MonoBehaviour
     {
         return pawnSpawnPoints[Random.Range(0, pawnSpawnPoints.Count)];
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void StartGame()
+    {
+        ChangeGameState(GameState.GameplayerState);
+    }
+
+    public void CloseOptionsMenu()
+    {
+        ChangeGameState(previousGameState);
+    }
 }
