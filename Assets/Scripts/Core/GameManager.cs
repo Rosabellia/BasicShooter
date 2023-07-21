@@ -1,21 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
+public class GameStateChangeEvent : UnityEvent<GameState, GameState>
+{
+
+}
+public enum GameState { TitleState, OptionsState, GameplayerState, GameOverState, CreditsState, PauseState };
 public class GameManager : MonoBehaviour
 {
+    public GameStateChangeEvent OnGameStateChanged = new GameStateChangeEvent();
     public static GameManager Instance;
     public List<int> points = new List<int>();
-    public int numberOfPlayers = 1;
     [HideInInspector] public int playersSpawned = 0;
     [HideInInspector] public int maxEnemies = 10;
     public List<Controller> players = new List<Controller>(); // List of players
     public List<Controller> enemies = new List<Controller>(); // List of enemies
     public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
     public GameObject playerPawn;
+
+    public bool IsPaused
+    {
+        get
+        {
+            return (currentGameState == GameState.PauseState);
+        }
+    }
+
     public enum Difficulty { Easy, Medium, Hard }
     public Difficulty difficulty = Difficulty.Easy;
-    public enum GameState { TitleState, OptionsState, GameplayerState, GameOverState, CreditsState, PauseState };
+
     public GameState currentGameState = GameState.TitleState;
     private GameState previousGameState;
 
@@ -24,6 +39,7 @@ public class GameManager : MonoBehaviour
     {
         previousGameState = currentGameState;
         currentGameState = state;
+        OnGameStateChanged.Invoke(previousGameState, currentGameState);
     }
 
     private void Awake()
@@ -86,10 +102,45 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         ChangeGameState(GameState.GameplayerState);
+        Time.timeScale = 1f;
     }
 
-    public void CloseOptionsMenu()
+    public void OpenOptionsMenu()
+    {
+        ChangeGameState(GameState.OptionsState);
+    }
+
+    public void ChangeToPreviousGameState()
     {
         ChangeGameState(previousGameState);
+    }
+
+    public void ChangeStateToTitle()
+    {
+        ChangeGameState(GameState.TitleState);
+    }
+
+    public void PauseGame()
+    {
+        ChangeGameState(GameState.PauseState);
+        Time.timeScale = 0f;
+    }
+
+    public void UnpauseGame()
+    {
+        ChangeGameState(GameState.GameplayerState);
+        Time.timeScale = 1f;
+    }
+
+    public void TogglePause()
+    {
+        if (currentGameState == GameState.PauseState)
+        {
+            UnpauseGame();
+        }
+        else
+        {
+            PauseGame();
+        }
     }
 }

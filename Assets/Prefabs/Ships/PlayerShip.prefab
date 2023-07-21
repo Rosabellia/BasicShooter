@@ -198,6 +198,7 @@ MonoBehaviour:
   rightKeyCode: 100
   leftKeyCode: 97
   shootKeyCode: 32
+  pauseKeycode: 27
 --- !u!114 &6954744327858079735
 MonoBehaviour:
   m_ObjectHideFlags: 0

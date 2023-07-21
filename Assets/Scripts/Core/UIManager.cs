@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour
 
     public void HidePauseMenu()
     {
-        PauseMenu.SetActive(true);
+        PauseMenu.SetActive(false);
     }
 
     public void ShowOptionsMenu()
@@ -52,10 +52,65 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOver()
     {
-
+        GameOver.SetActive(true);
     }
     public void HideGameOver()
     {
+        GameOver.SetActive(false);
+    }
 
+    public void HandleGameStateChanged(GameState previousState, GameState newState)
+    {
+        switch (previousState)
+        {
+            case GameState.TitleState:
+                HideTitleScreenUI();
+                break;
+
+            case GameState.OptionsState:
+                HideOptionsMenu();
+                break;
+
+            case GameState.GameplayerState:
+                break;
+
+            case GameState.GameOverState:
+                HideGameOver();
+                break;
+
+            case GameState.CreditsState:
+                //Hide credits
+                break;
+
+            case GameState.PauseState:
+                HidePauseMenu();
+                break;
+        }
+
+        switch (newState)
+        {
+            case GameState.TitleState:
+                ShowTitleScreenUI();
+                break;
+
+            case GameState.OptionsState:
+                ShowOptionsMenu();
+                break;
+
+            case GameState.GameplayerState:
+                break;
+
+            case GameState.GameOverState:
+                ShowGameOver();
+                break;
+
+            case GameState.CreditsState:
+                //Show Credits
+                break;
+
+            case GameState.PauseState:
+                ShowPauseMenu();
+                break;
+        }
     }
 }

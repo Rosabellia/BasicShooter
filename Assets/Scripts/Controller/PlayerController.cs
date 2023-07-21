@@ -11,6 +11,7 @@ public class PlayerController : Controller
     public KeyCode rightKeyCode;
     public KeyCode leftKeyCode;
     public KeyCode shootKeyCode;
+    public KeyCode pauseKeycode;
 
     // Start is called before the first frame update
     public override void Start()
@@ -44,25 +45,33 @@ public class PlayerController : Controller
     private void ProcessInputs()
     {
         // Assign each buttion
-        if (Input.GetKey(forwardKeyCode))
-        {
-            pawn.MoveForward();
+        if (!GameManager.Instance.IsPaused) {
+
+            if (Input.GetKey(forwardKeyCode))
+            {
+                pawn.MoveForward();
+            }
+            if (Input.GetKey(backwardKeyCode))
+            {
+                pawn.MoveBackward();
+            }
+            if (Input.GetKey(rightKeyCode))
+            {
+                pawn.Rotate(1f);
+            }
+            if (Input.GetKey(leftKeyCode))
+            {
+                pawn.Rotate(-1f);
+            }
+            if (Input.GetKeyDown(shootKeyCode))
+            {
+                pawn.Shoot();
+            }
+
         }
-        if (Input.GetKey(backwardKeyCode))
+        if (Input.GetKeyDown(pauseKeycode))
         {
-            pawn.MoveBackward();
-        }
-        if (Input.GetKey(rightKeyCode))
-        {
-            pawn.Rotate(1f); 
-        }
-        if (Input.GetKey(leftKeyCode))
-        {
-            pawn.Rotate(-1f); 
-        }
-        if (Input.GetKeyDown(shootKeyCode))
-        {
-            pawn.Shoot();
+            GameManager.Instance.TogglePause();
         }
     }
 }
