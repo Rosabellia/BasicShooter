@@ -20,6 +20,18 @@ public class MapGenerator : MonoBehaviour
         //GenerateMap();
     }
 
+    public void ChangeRandomization(bool isMapOfDay)
+    {
+        if (isMapOfDay)
+        {
+            randomType = RandomType.MapOfTheDay;
+        }
+        else
+        {
+            randomType = RandomType.Random;
+        }
+    }
+
     public GameObject RandomRoomPrefab()
     {
        return roomPrefabs[UnityEngine.Random.Range(0, roomPrefabs.Count)];

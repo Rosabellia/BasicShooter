@@ -7,6 +7,8 @@ public abstract class Pawn : MonoBehaviour
     protected Mover mover;
     protected Shooter shooter;
 
+    public int pointsOnKilled = 100;
+
     public virtual void Start()
     {
         

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,6 +32,20 @@ public class GameManager : MonoBehaviour
             return (currentGameState == GameState.PauseState);
         }
     }
+
+    public bool PlayersHaveLives
+    {
+        get
+        {
+            int totalLives = 0;
+            foreach(int playerLives in lives)
+            {
+                totalLives += playerLives;
+            }
+            return (totalLives > 0);
+        }
+    }
+
 
     public enum Difficulty { Easy, Medium, Hard }
     public Difficulty difficulty = Difficulty.Easy;
@@ -180,5 +195,23 @@ public class GameManager : MonoBehaviour
         {
             PauseGame();
         }
+    }
+
+    public int GetPlayerIndext(Pawn source)
+    {
+        // Get the controller
+
+
+        foreach (Controller controller in players)
+        {
+            if (controller.ControlledPawn == source)
+            {
+                return (players.IndexOf(controller));
+            }
+        }
+        // Compare the controller with the playercontrollers, return the indext if there is a match
+
+        // If no match, return -1
+        return -1;
     }
 }
