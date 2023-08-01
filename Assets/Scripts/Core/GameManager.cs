@@ -12,13 +12,17 @@ public class GameManager : MonoBehaviour
 {
     public GameStateChangeEvent OnGameStateChanged = new GameStateChangeEvent();
     public static GameManager Instance;
+    public int numberOfPlayers = 2;
     public List<int> points = new List<int>();
+    public List<int> lives = new List<int>();
     [HideInInspector] public int playersSpawned = 0;
     [HideInInspector] public int maxEnemies = 10;
     public List<Controller> players = new List<Controller>(); // List of players
     public List<Controller> enemies = new List<Controller>(); // List of enemies
     public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
     public GameObject playerPawn;
+
+    public bool multiplayer = false;
 
     public bool IsPaused
     {
@@ -74,6 +78,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("No difficult was set");
         }
+        AdjustPlayerCameras();
     }
 
     void SpawnPlayer()
@@ -85,8 +90,41 @@ public class GameManager : MonoBehaviour
             // MAKE SURE THERE ARE ENOUGH PAWN SPAWN POINTS SO THE GAME NEVER BREAKS
         }
 
+        AdjustPlayerCameras();
+
         Instantiate(playerPawn, spawn.transform.position, Quaternion.identity);
 
+    }
+
+    private void AdjustPlayerCameras()
+    {
+        // Get player 1's camera
+        Camera player1Camera = players[0].GetComponentInChildren<Camera>();
+
+        if (numberOfPlayers == 1)
+        {
+            // Get player 1's camera
+
+            // Set player 1's camera posistion
+            player1Camera.rect = new Rect(0, 0, 0.5f, 1f);
+
+            // Set player 1's camera posistion
+            player1Camera.rect = new Rect(0, 0, 1f, 1f);
+            Debug.Log(player1Camera.rect);
+        }
+        else
+        {
+            // Get player 2's camera
+            Camera player2Camera = players[1].GetComponentInChildren<Camera>();
+
+            // Set player 1's camera posistion
+            player1Camera.rect = new Rect(0, 0, 0.5f, 1f);
+            Debug.Log(player1Camera.rect);
+
+            // Set player 2's camera posistion
+            player2Camera.rect = new Rect(0.5f, 0, 0.5f, 1f);
+            Debug.Log(player1Camera.rect);
+        }
     }
 
     private PawnSpawnPoint GetRandomSpawnPoint()

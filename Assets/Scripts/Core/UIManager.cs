@@ -1,17 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+
     public GameObject TitleScreenObject;
     public GameObject OptionsMenu;
     public GameObject PauseMenu;
     public GameObject GameOver;
+    
+    public Slider masterVolumeSlider;
+    public Slider sfxVolumeSlider;
+    public Slider bgmVolumeSlider;
+
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
+        masterVolumeSlider.value = AudioManager.Instance.masterVolume;
+        sfxVolumeSlider.value = AudioManager.Instance.sfxVolume;
+        bgmVolumeSlider.value = AudioManager.Instance.bgmVolume;
+
     }
 
     // Update is called once per frame
