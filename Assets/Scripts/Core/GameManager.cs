@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,17 +15,43 @@ public class GameManager : MonoBehaviour
 {
     public GameStateChangeEvent OnGameStateChanged = new GameStateChangeEvent();
     public static GameManager Instance;
-    public int numberOfPlayers = 2;
+    public int numberOfPlayers = 1;
     public List<int> points = new List<int>();
     public List<int> lives = new List<int>();
     [HideInInspector] public int playersSpawned = 0;
-    [HideInInspector] public int maxEnemies = 10;
+    public int maxEnemiesCount = 10;
+
+
     public List<Controller> players = new List<Controller>(); // List of players
     public List<Controller> enemies = new List<Controller>(); // List of enemies
-    public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
-    public GameObject playerPawn;
 
-    public bool multiplayer = false;
+    public List<PawnSpawnPoint> pawnSpawnPoints = new List<PawnSpawnPoint>();
+    public List<PawnSpawnPoint> pawnSpawnPointsToAdd = new List<PawnSpawnPoint>();
+    
+    public List<GameObject> enemyPrefabs = new List<GameObject>();
+    public List<Waypoint> waypoints = new List<Waypoint>();
+    public List<Waypoint> waypointsToAdd = new List<Waypoint>();
+
+    public GameObject playerPrefab;
+    
+
+    public IEnumerator SpawnShipsNextFrame()
+    {
+        yield return null;
+        // this code runs on the next frame
+        SpawnPlayers();
+        if (players.Count == numberOfPlayers)
+        {
+            SpawnEnemies();
+        }
+    }
+    public IEnumerator SpawnPlayerShipNextFrame()
+    {
+        SpawnPlayer();
+        yield return null;
+    }
+
+    public bool multiplayer = true;
 
     public bool IsPaused
     {
@@ -93,22 +121,105 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("No difficult was set");
         }
-        AdjustPlayerCameras();
     }
 
-    void SpawnPlayer()
+    public void setSingleplayer()
     {
+        // Set singleplayer for menu UI
+        numberOfPlayers = 1;
+        multiplayer = false;
+
+        points.Add(0);
+        lives.Add(3);
+
+        StartGame();
+    }
+
+    public void setMultiplayer()
+    {
+        // Set multiplayer for menu UI
+        numberOfPlayers = 2;
+        multiplayer = true;
+
+        points.Add(0);
+        points.Add(0);
+        lives.Add(3);
+        lives.Add(3);
+
+        StartGame();
+    }
+
+    public void SpawnEnemy()
+    {
+        if (enemies.Count == maxEnemiesCount)
+        {
+            Debug.Log("All enemies has been spawned");
+            return;
+        }
+
         PawnSpawnPoint spawn = GetRandomSpawnPoint();
-        while(spawn.spawnedPawn != null) 
+        if (spawn.spawnedPawn == null)
         {
             spawn = GetRandomSpawnPoint();
+
+            int enemyNumer = UnityEngine.Random.Range(0, enemyPrefabs.Count);
+
+            GameObject spawnedEnemy = Instantiate(enemyPrefabs[enemyNumer], spawn.transform.position, Quaternion.identity);
+            spawn.spawnedPawn = spawnedEnemy.GetComponent<Pawn>();
+            enemies.Add(spawnedEnemy.GetComponent<Controller>());
+            // MAKE SURE THERE ARE ENOUGH PAWN SPAWN POINTS SO THE GAME NEVER BREAK
+            
+        }
+        else
+        {
+            SpawnEnemies();
+        }
+    }
+    public void SpawnPlayer()
+    {
+        
+        if (pawnSpawnPoints.Count < numberOfPlayers)
+        {
+            Debug.LogError("Not enough spawn points");
+            return;
+        }
+        PawnSpawnPoint spawn = GetRandomSpawnPoint();
+        if (spawn.spawnedPawn == null)
+        {
+            GameObject spawnedPlayer = Instantiate(playerPrefab, spawn.transform.position, Quaternion.identity);
+            spawn.spawnedPawn = spawnedPlayer.GetComponent<Pawn>();
+            players.Add(spawnedPlayer.GetComponent<Controller>());
             // MAKE SURE THERE ARE ENOUGH PAWN SPAWN POINTS SO THE GAME NEVER BREAKS
+            AdjustPlayerCameras();
+            SetMovementControls();
+
+
+        }
+        else
+        {
+            SpawnPlayer();
+        }
+
+    }
+
+    public void SpawnPlayers()
+    {
+        while (players.Count < numberOfPlayers) 
+        {
+            SpawnPlayer();
         }
 
         AdjustPlayerCameras();
+    }
 
-        Instantiate(playerPawn, spawn.transform.position, Quaternion.identity);
+    public void SpawnEnemies()
+    {
+        while (enemies.Count < maxEnemiesCount) 
+        {
+            SpawnEnemy();
+        }
 
+        RestartSpawnPoints();
     }
 
     private void AdjustPlayerCameras()
@@ -116,7 +227,7 @@ public class GameManager : MonoBehaviour
         // Get player 1's camera
         Camera player1Camera = players[0].GetComponentInChildren<Camera>();
 
-        if (numberOfPlayers == 1)
+        if (players.Count == 1)
         {
             // Get player 1's camera
 
@@ -125,7 +236,6 @@ public class GameManager : MonoBehaviour
 
             // Set player 1's camera posistion
             player1Camera.rect = new Rect(0, 0, 1f, 1f);
-            Debug.Log(player1Camera.rect);
         }
         else
         {
@@ -138,13 +248,51 @@ public class GameManager : MonoBehaviour
 
             // Set player 2's camera posistion
             player2Camera.rect = new Rect(0.5f, 0, 0.5f, 1f);
-            Debug.Log(player1Camera.rect);
+        }
+    }
+
+    private void SetMovementControls()
+    {
+        PlayerController player1Controller = players[0].GetComponentInChildren<PlayerController>();
+
+        if (players.Count == 1)
+        {
+            player1Controller.forwardKeyCode = KeyCode.W;
+            player1Controller.backwardKeyCode = KeyCode.S;
+            player1Controller.rightKeyCode = KeyCode.D;
+            player1Controller.leftKeyCode = KeyCode.A;
+            player1Controller.shootKeyCode = KeyCode.Space;
+        }
+        else
+        {
+            // Get player 2's controlls
+            PlayerController player2Controller = players[1].GetComponentInChildren<PlayerController>();
+
+            player2Controller.forwardKeyCode = KeyCode.UpArrow;
+            player2Controller.backwardKeyCode = KeyCode.DownArrow;
+            player2Controller.rightKeyCode = KeyCode.RightArrow;
+            player2Controller.leftKeyCode = KeyCode.LeftArrow;
+            player2Controller.shootKeyCode = KeyCode.Mouse0;
         }
     }
 
     private PawnSpawnPoint GetRandomSpawnPoint()
     {
-        return pawnSpawnPoints[Random.Range(0, pawnSpawnPoints.Count)];
+        if (pawnSpawnPoints.Count == 0)
+        {
+            foreach (PawnSpawnPoint pawnSpawnPoint in pawnSpawnPoints)
+            {
+                pawnSpawnPoints.Add(pawnSpawnPoint);
+                pawnSpawnPointsToAdd.Remove(pawnSpawnPoint);
+            }
+        }
+
+        return pawnSpawnPoints[UnityEngine.Random.Range(0, pawnSpawnPoints.Count)];
+    }
+
+    public Waypoint GetRandomWaypoint()
+    {
+        return waypoints[UnityEngine.Random.Range(0, waypoints.Count)];
     }
 
     public void QuitGame()
@@ -156,6 +304,7 @@ public class GameManager : MonoBehaviour
     {
         ChangeGameState(GameState.GameplayerState);
         Time.timeScale = 1f;
+        StartCoroutine(SpawnShipsNextFrame());
     }
 
     public void OpenOptionsMenu()
@@ -211,7 +360,32 @@ public class GameManager : MonoBehaviour
         }
         // Compare the controller with the playercontrollers, return the indext if there is a match
 
-        // If no match, return -1
-        return -1;
+        // If no match, return 3
+        return 3;
+    }
+
+    public void Respawn()
+    {
+        // Respawn player
+
+        // Respawn enemy
+    }
+
+    public void RestartWaypointCount()
+    {
+        foreach (Waypoint waypoint in GameManager.Instance.waypointsToAdd)
+        {
+            waypoints.Add(waypoint);
+            waypointsToAdd.Remove(waypoint);
+        }
+    }
+    public void RestartSpawnPoints()
+    {
+        foreach (PawnSpawnPoint spawnPoint in pawnSpawnPointsToAdd)
+        {
+            pawnSpawnPoints.Add(spawnPoint);
+            pawnSpawnPointsToAdd.Remove(spawnPoint);
+
+        }
     }
 }

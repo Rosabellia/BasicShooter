@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject OptionsMenu;
     public GameObject PauseMenu;
     public GameObject GameOver;
+    public GameObject UICamera;
     
     public Slider masterVolumeSlider;
     public Slider sfxVolumeSlider;
@@ -30,6 +31,14 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ToggleUICamera()
+    {
+        if(UICamera != null)
+        {
+            UICamera.SetActive(!UICamera.activeInHierarchy);
+        }
     }
 
     public void HideTitleScreenUI()
@@ -64,6 +73,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOver()
     {
+        ToggleUICamera();
         GameOver.SetActive(true);
     }
     public void HideGameOver()

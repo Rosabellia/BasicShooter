@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static Unity.VisualScripting.Member;
+[System.Serializable]
 
 public class HealthChanged : UnityEvent<float,float>
 {
-
+    
 }
 
 public class Health : MonoBehaviour
@@ -16,6 +17,7 @@ public class Health : MonoBehaviour
     public float currentHealth;
     public float maxHealth = 100f;
     public HealthChanged OnHealthChanged = new HealthChanged();
+    public PlayerHUD playerHUD;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +33,8 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage, Pawn source)
     {
-        OnHealthChanged.Invoke(currentHealth, maxHealth);
         currentHealth = Mathf.Clamp(currentHealth - damage, minHealth, maxHealth);
-        Debug.Log(source.name + " did " + damage + " amount");
+        OnHealthChanged.Invoke(currentHealth, maxHealth);
         if (Mathf.Approximately(currentHealth, minHealth))
         {
             Die(source);
@@ -50,6 +51,7 @@ public class Health : MonoBehaviour
             return;
         }
         currentHealth = Mathf.Clamp(currentHealth + value, minHealth, maxHealth);
+        OnHealthChanged.Invoke(currentHealth, maxHealth);
     }
 
     private void Die(Pawn source)
@@ -57,10 +59,17 @@ public class Health : MonoBehaviour
         // Get the player indext if killed to a player
         int playerIndext = GameManager.Instance.GetPlayerIndext(source);
 
-        // Award points to theat player
-        if (playerIndext != -1)
+        // Award points to that player
+        if (playerIndext != 3)
         {
             GameManager.Instance.points[playerIndext] += source.pointsOnKilled;
+        }
+
+        int myIndext = GameManager.Instance.GetPlayerIndext(gameObject.GetComponent<Pawn>());
+
+        if (myIndext >=0)
+        {
+            StartCoroutine(GameManager.Instance.SpawnPlayerShipNextFrame());
         }
 
         Destroy(gameObject);

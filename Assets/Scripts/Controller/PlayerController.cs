@@ -16,6 +16,8 @@ public class PlayerController : Controller
     // Start is called before the first frame update
     public override void Start()
     {
+
+        
         // Make sure we have the SpaceShipPawn
         pawn = GetComponent<Pawn>();
         if (GameManager.Instance)
@@ -23,11 +25,13 @@ public class PlayerController : Controller
             GameManager.Instance.players.Add(this);
         }
 
+
         base.Start();
     }
 
     private void OnDestroy()
     {
+        
         // When the Player gets destroyed, they get removed from the Player list
         if (GameManager.Instance)
         {

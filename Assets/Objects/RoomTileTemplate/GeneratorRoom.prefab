@@ -398,6 +398,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19930300, guid: 5f8552cfeac0c29428f4d3d1362bacae, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19953252, guid: 5f8552cfeac0c29428f4d3d1362bacae, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f8552cfeac0c29428f4d3d1362bacae, type: 3}
 --- !u!1001 &5177809046599809676
@@ -679,6 +687,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1440095575544632930, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: spawnDelay
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440095575544632930, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: pickupPrefab
+      value: 
+      objectReference: {fileID: 2076401947704571295, guid: cb6d9495bcd82374f936729f568c67c0, type: 3}
     - target: {fileID: 1984057638654453836, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: m_RootOrder
       value: 103
@@ -686,6 +702,18 @@ PrefabInstance:
     - target: {fileID: 2975568220937395051, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: m_RootOrder
       value: 103
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601876841173418881, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 107
+      objectReference: {fileID: 0}
+    - target: {fileID: 3814561900787297230, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 106
+      objectReference: {fileID: 0}
+    - target: {fileID: 3814561900787297230, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 4477120173995524304, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: m_IsActive
@@ -707,6 +735,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 107
       objectReference: {fileID: 0}
+    - target: {fileID: 4863728009583412772, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 4871910531192505453, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -715,6 +747,14 @@ PrefabInstance:
       propertyPath: spawnedPawn
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5128707641287767944, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549567072619736549, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 104
+      objectReference: {fileID: 0}
     - target: {fileID: 5566606513044918313, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: spawnedPawn
       value: 
@@ -722,6 +762,14 @@ PrefabInstance:
     - target: {fileID: 5748554294053845110, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516356002296837726, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6795451114052425614, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 103
       objectReference: {fileID: 0}
     - target: {fileID: 8311457939902964888, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: m_RootOrder
@@ -746,6 +794,10 @@ PrefabInstance:
     - target: {fileID: 8730626431978445601, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
       propertyPath: spawnedPawn
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8786161353950544477, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41d4243be8ad3a5409422171976de7ff, type: 3}
@@ -886,6 +938,10 @@ PrefabInstance:
     - target: {fileID: 6217031999978604837, guid: 3a4147a579d3fb64997daca134d6696a, type: 3}
       propertyPath: m_Name
       value: EnemyShipPatrol
+      objectReference: {fileID: 0}
+    - target: {fileID: 6217031999978604837, guid: 3a4147a579d3fb64997daca134d6696a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4147a579d3fb64997daca134d6696a, type: 3}

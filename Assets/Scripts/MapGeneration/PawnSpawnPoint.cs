@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PawnSpawnPoint : MonoBehaviour
 {
-    public GameObject spawnedPawn;
+    public Pawn spawnedPawn;
     
 
     public virtual void Start()
@@ -12,13 +12,9 @@ public class PawnSpawnPoint : MonoBehaviour
         GameManager.Instance.pawnSpawnPoints.Add(this);
     }
 
-    public virtual void Update()
-    {
-        
-    }
-
     private void OnDestroy()
     {
+        GameManager.Instance.pawnSpawnPointsToAdd.Add(this);
         GameManager.Instance.pawnSpawnPoints.Remove(this);
     }
 }

@@ -2,9 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class  MapGeneratorEvent : UnityEvent
+{
+    
+}
 
 public class MapGenerator : MonoBehaviour
 {
+    [SerializeField] public MapGeneratorEvent OnMapGenerated = new MapGeneratorEvent();
     public List<GameObject> roomPrefabs;
     public int rows = 4;
     public int colums = 4;
@@ -114,6 +122,9 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        //OnMapGenerated.Invoke();
+
     }
 
 }
