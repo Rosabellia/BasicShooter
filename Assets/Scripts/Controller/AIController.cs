@@ -45,6 +45,11 @@ public class AIController : Controller
         base.Start();
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.enemies.Remove(this);
+    }
+
     public override void Update()
     {
         MakeDesisions();
@@ -188,24 +193,30 @@ public class AIController : Controller
                     // Check each aiController for distance
                     foreach (Controller aiController in GameManager.Instance.enemies)
                     {
-                        // Get first aiController
-                        firstAlly = aiController.gameObject.GetComponent<Health>();
-
-                        if (firstAlly != this.gameObject.GetComponent<Health>())
+                        if (aiController != null)
                         {
-                            // change secondAlly to firstAlly
-                            if (firstAlly.currentHealth < secondAlly.currentHealth)
+                            // Get first aiController
+                            firstAlly = aiController.gameObject.GetComponent<Health>();
+                            if (firstAlly != null && secondAlly != null)
                             {
-                                secondAlly = firstAlly;
+                                if (firstAlly != this.gameObject.GetComponent<Health>())
+                                {
+                                    // change secondAlly to firstAlly
+                                    if (firstAlly.currentHealth < secondAlly.currentHealth)
+                                    {
+                                        secondAlly = firstAlly;
 
-                            }
+                                    }
 
-                            // if firstAlly is the same as SecondVector make that the target
-                            if (firstAlly.gameObject == secondAlly.gameObject)
-                            {
-                                target = aiController.gameObject;
+                                    // if firstAlly is the same as SecondVector make that the target
+                                    if (firstAlly.gameObject == secondAlly.gameObject)
+                                    {
+                                        target = aiController.gameObject;
+                                    }
+                                }
                             }
                         }
+
                     }
                 }
 
@@ -215,8 +226,11 @@ public class AIController : Controller
                     ChangeAIState(AIState.BacktoPoint);
                     return;
                 }
+                if (target != null)
+                {
+                    DoChaseState(target.transform.position);
+                }
 
-                DoChaseState(target.transform.position);
                 break;
             case AIState.FindPlayer:
                 // Do that states behavior

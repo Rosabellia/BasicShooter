@@ -754,7 +754,7 @@ MonoBehaviour:
   fireForce: 2000
   damageDone: 20
   shellLifespan: 5
-  shotCooldownTime: 1
+  shotCooldownTime: 0.5
   shellPrefab: {fileID: 2614046803521498486, guid: c56a36d9f852c0c47aaab163ffb294d7, type: 3}
   moveSpeedBonus: 0
   moveSpeedMultiplier: 1

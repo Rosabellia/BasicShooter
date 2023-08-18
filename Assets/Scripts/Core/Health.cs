@@ -59,17 +59,23 @@ public class Health : MonoBehaviour
         // Get the player indext if killed to a player
         int playerIndext = GameManager.Instance.GetPlayerIndext(source);
 
+
         // Award points to that player
-        if (playerIndext != 3)
+        if (playerIndext != -1)
         {
             GameManager.Instance.points[playerIndext] += source.pointsOnKilled;
         }
 
         int myIndext = GameManager.Instance.GetPlayerIndext(gameObject.GetComponent<Pawn>());
+        Debug.Log(myIndext);
 
-        if (myIndext >=0)
+        if (myIndext >=0 && playerIndext == -1)
         {
             StartCoroutine(GameManager.Instance.SpawnPlayerShipNextFrame());
+        }
+        else
+        {
+            GameManager.Instance.SpawnEnemy();
         }
 
         Destroy(gameObject);

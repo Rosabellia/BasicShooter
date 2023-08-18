@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         yield return null;
         // this code runs on the next frame
         SpawnPlayers();
-        if (players.Count == numberOfPlayers)
+        if (playersSpawned == numberOfPlayers)
         {
             SpawnEnemies();
         }
@@ -188,11 +188,8 @@ public class GameManager : MonoBehaviour
         {
             GameObject spawnedPlayer = Instantiate(playerPrefab, spawn.transform.position, Quaternion.identity);
             spawn.spawnedPawn = spawnedPlayer.GetComponent<Pawn>();
-            players.Add(spawnedPlayer.GetComponent<Controller>());
+            playersSpawned += 1;
             // MAKE SURE THERE ARE ENOUGH PAWN SPAWN POINTS SO THE GAME NEVER BREAKS
-            AdjustPlayerCameras();
-            SetMovementControls();
-
 
         }
         else
@@ -204,12 +201,11 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayers()
     {
-        while (players.Count < numberOfPlayers) 
+        while (playersSpawned < numberOfPlayers) 
         {
             SpawnPlayer();
         }
 
-        AdjustPlayerCameras();
     }
 
     public void SpawnEnemies()
@@ -222,59 +218,6 @@ public class GameManager : MonoBehaviour
         RestartSpawnPoints();
     }
 
-    private void AdjustPlayerCameras()
-    {
-        // Get player 1's camera
-        Camera player1Camera = players[0].GetComponentInChildren<Camera>();
-
-        if (players.Count == 1)
-        {
-            // Get player 1's camera
-
-            // Set player 1's camera posistion
-            player1Camera.rect = new Rect(0, 0, 0.5f, 1f);
-
-            // Set player 1's camera posistion
-            player1Camera.rect = new Rect(0, 0, 1f, 1f);
-        }
-        else
-        {
-            // Get player 2's camera
-            Camera player2Camera = players[1].GetComponentInChildren<Camera>();
-
-            // Set player 1's camera posistion
-            player1Camera.rect = new Rect(0, 0, 0.5f, 1f);
-            Debug.Log(player1Camera.rect);
-
-            // Set player 2's camera posistion
-            player2Camera.rect = new Rect(0.5f, 0, 0.5f, 1f);
-        }
-    }
-
-    private void SetMovementControls()
-    {
-        PlayerController player1Controller = players[0].GetComponentInChildren<PlayerController>();
-
-        if (players.Count == 1)
-        {
-            player1Controller.forwardKeyCode = KeyCode.W;
-            player1Controller.backwardKeyCode = KeyCode.S;
-            player1Controller.rightKeyCode = KeyCode.D;
-            player1Controller.leftKeyCode = KeyCode.A;
-            player1Controller.shootKeyCode = KeyCode.Space;
-        }
-        else
-        {
-            // Get player 2's controlls
-            PlayerController player2Controller = players[1].GetComponentInChildren<PlayerController>();
-
-            player2Controller.forwardKeyCode = KeyCode.UpArrow;
-            player2Controller.backwardKeyCode = KeyCode.DownArrow;
-            player2Controller.rightKeyCode = KeyCode.RightArrow;
-            player2Controller.leftKeyCode = KeyCode.LeftArrow;
-            player2Controller.shootKeyCode = KeyCode.Mouse0;
-        }
-    }
 
     private PawnSpawnPoint GetRandomSpawnPoint()
     {
@@ -360,8 +303,8 @@ public class GameManager : MonoBehaviour
         }
         // Compare the controller with the playercontrollers, return the indext if there is a match
 
-        // If no match, return 3
-        return 3;
+        // If no match, return -1
+        return -1;
     }
 
     public void Respawn()
