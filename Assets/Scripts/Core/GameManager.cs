@@ -331,4 +331,13 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    public void Respawn(int player)
+    {
+        if (lives[player] > 0)
+        {
+            SpawnPlayer();
+        }
+    }
+
 }

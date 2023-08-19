@@ -69,9 +69,10 @@ public class Health : MonoBehaviour
         int myIndext = GameManager.Instance.GetPlayerIndext(gameObject.GetComponent<Pawn>());
         Debug.Log(myIndext);
 
-        if (myIndext >=0 && playerIndext == -1)
+        if (myIndext >= 0 && playerIndext == -1)
         {
-            StartCoroutine(GameManager.Instance.SpawnPlayerShipNextFrame());
+            GameManager.Instance.lives[myIndext] -= 1;
+
         }
         else
         {

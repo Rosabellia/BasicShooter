@@ -14,11 +14,14 @@ public class PlayerController : Controller
     public KeyCode shootKeyCode;
     public KeyCode pauseKeycode;
 
+    private int myIndext;
+
     // Start is called before the first frame update
     public override void Start()
     {
-
         
+
+        Debug.Log(myIndext);
         // Make sure we have the SpaceShipPawn
         pawn = GetComponent<Pawn>();
         if (GameManager.Instance)
@@ -30,20 +33,27 @@ public class PlayerController : Controller
             Debug.Log(GameManager.Instance.players.Count); // on respan gives 2
         }
 
-        
+        myIndext = GameManager.Instance.GetPlayerIndext(this.GetComponentInParent<Pawn>());
 
         base.Start();
     }
 
     private void OnDestroy()
     {
-        
+
         // When the Player gets destroyed, they get removed from the Player list
         if (GameManager.Instance)
         {
-            GameManager.Instance.players.Remove(this);
 
-            Debug.Log(GameManager.Instance.players.Count); // on respawn gives 1
+            if (GameManager.Instance.lives[myIndext] > 0)
+            {
+
+                GameManager.Instance.players.Remove(this);
+
+                //TODO: Remove from here v
+                GameManager.Instance.Respawn(myIndext);
+
+            }
         }
     }
 
