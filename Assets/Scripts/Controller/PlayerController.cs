@@ -19,9 +19,7 @@ public class PlayerController : Controller
     // Start is called before the first frame update
     public override void Start()
     {
-        
 
-        Debug.Log(myIndext);
         // Make sure we have the SpaceShipPawn
         pawn = GetComponent<Pawn>();
         if (GameManager.Instance)

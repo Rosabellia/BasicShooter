@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-
     public GameObject TitleScreenObject;
     public GameObject OptionsMenu;
     public GameObject PauseMenu;
     public GameObject GameOver;
     public GameObject UICamera;
-    
+
+    public TMP_Text player1ScoreText;
+    public TMP_Text player2ScoreText;
+
     public Slider masterVolumeSlider;
     public Slider sfxVolumeSlider;
     public Slider bgmVolumeSlider;
+    private bool startedGame = false;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         GameManager.Instance.OnGameStateChanged.AddListener(HandleGameStateChanged);
         masterVolumeSlider.value = AudioManager.Instance.masterVolume;
@@ -28,8 +32,12 @@ public class UIManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+       if (GameManager.Instance.PlayersHaveLives == false && startedGame == true)
+        {
+            ShowGameOver();
+        }
         
     }
 
@@ -44,6 +52,7 @@ public class UIManager : MonoBehaviour
     public void HideTitleScreenUI()
     {
         TitleScreenObject.SetActive(false);
+        startedGame = true;
     }
 
     public void ShowTitleScreenUI()
@@ -73,6 +82,15 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOver()
     {
+        startedGame = false;
+        if (GameManager.Instance.players.Count == 1)
+        {
+            player1ScoreText.text = "" + GameManager.Instance.points[0];
+        }
+        if(GameManager.Instance.players.Count == 2)
+        {
+            player2ScoreText.text = "" + GameManager.Instance.points[1];
+        }
         ToggleUICamera();
         GameOver.SetActive(true);
     }

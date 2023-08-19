@@ -132,6 +132,10 @@ public class AIController : Controller
                         ChangeAIState(AIState.Flee);
                     }
                 }
+                else
+                {
+                    ChangeAIState(AIState.Scan);
+                }
                 break;
             case AIState.Scan:
                 // Do that states behavior
