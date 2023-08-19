@@ -52,7 +52,10 @@ public class UIManager : MonoBehaviour
     public void HideTitleScreenUI()
     {
         TitleScreenObject.SetActive(false);
-        startedGame = true;
+        if (UICamera.active == false)
+        {
+            startedGame = true;
+        }
     }
 
     public void ShowTitleScreenUI()

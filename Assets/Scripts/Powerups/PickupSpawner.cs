@@ -12,6 +12,8 @@ public class PickupSpawner : MonoBehaviour
 
     private void Start()
     {
+
+        Debug.Log("hi");
         spawnedPickup = Instantiate(pickupPrefab, transform.position, Quaternion.identity) as GameObject;
     }
 
@@ -27,7 +29,7 @@ public class PickupSpawner : MonoBehaviour
         }
         else
         {
-            nextSpawnTime = Time.time + spawnDelay;
+            nextSpawnTime = Time.deltaTime + spawnDelay;
         }
     }
 }
